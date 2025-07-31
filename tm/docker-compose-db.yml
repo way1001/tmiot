@@ -1,0 +1,84 @@
+#
+# Copyright 2016-present the TM IoT original author or authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+services:
+  redis:
+    image: pnoker/base-redis:2025.2
+    restart: always
+    ports:
+      - '36379:6379'
+    container_name: base-redis
+    hostname: base-redis
+    volumes:
+      - redis:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: '10M'
+        max-file: '20'
+    networks:
+      net:
+        aliases:
+          - base-redis
+
+  postgres:
+    image: pnoker/base-postgres:2025.2
+    restart: always
+    ports:
+      - "35432:5432"
+    container_name: base-postgres
+    hostname: base-postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-postgres
+
+  rabbitmq:
+    image: pnoker/base-rabbitmq:2025.2
+    restart: always
+    ports:
+      - "35671:5671"
+      - "35672:5672"
+      - "15672:15672"
+    container_name: base-rabbitmq
+    hostname: base-rabbitmq
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-rabbitmq
+
+volumes:
+  redis:
+  postgres:
+  rabbitmq:
+
+networks:
+  net:
+    driver: bridge

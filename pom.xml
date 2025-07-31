@@ -1,0 +1,1260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2025-present the TM IoT original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.aiforest.tmiot</groupId>
+    <artifactId>tmiot</artifactId>
+    <!-- <name>${project.artifactId}</name> -->
+    <version>2025.7.21</version>
+    <packaging>pom</packaging>
+
+    <inceptionYear>2025-present</inceptionYear>
+    <url>https://aiforest.com/tmiot</url>
+    <description>
+        TM IoT is a fully open-source distributed Internet of Things (IoT) platform built on Spring Cloud.
+        It accelerates IoT project development and simplifies IoT device management, providing comprehensive solutions for building robust IoT systems.
+        All components and code are open-source, ensuring transparency, flexibility, and community-driven innovation.
+    </description>
+
+    <developers>
+        <developer>
+            <id>way</id>
+            <name>way</name>
+            <email>way1001@yeah.net</email>
+            <roles>
+                <role>XXX</role>
+            </roles>
+            <organization>aiforest.com</organization>
+            <url>https://github.com/aiforest.com/tmiot</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/way1001/tmiot</url>
+        <connection>https://github.com/way1001/tmiot.git</connection>
+        <developerConnection>https://github.com/way1001/tmiot.git</developerConnection>
+    </scm>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.plugin.validation>VERBOSE</maven.plugin.validation>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--
+        Spring related dependencies
+        Updated on 2025.04.24, all latest
+        -->
+        <spring.boot.version>3.5.3</spring.boot.version>
+        <spring.cloud.version>2025.0.0</spring.cloud.version>
+
+        <!--
+        gRpc related dependencies
+        Updated on 2025.04.24, only protobuf.version cannot use the latest version
+        Because the tool that generates stub code has stopped being maintained.
+         -->
+        <grpc.version>1.73.0</grpc.version>
+        <protobuf.version>4.31.1</protobuf.version>
+        <grpc.spring.boot.version>3.1.0.RELEASE</grpc.spring.boot.version>
+
+        <!--
+         Database related dependencies,
+         When mybatis.plus.version is upgraded to 3.5.9,
+         an error will be reported during compilation.
+         Updated on 2025.04.24, all latest
+         -->
+        <mybatis.plus.version>3.5.12</mybatis.plus.version>
+        <mybatis.plus.dynamic.version>4.3.1</mybatis.plus.dynamic.version>
+
+        <!-- General tools -->
+        <jwt.version>0.12.6</jwt.version>
+        <okhttp.version>4.12.0</okhttp.version>
+        <netty.version>4.2.3.Final</netty.version>
+        <commons.io.version>2.19.0</commons.io.version>
+        <jakarta.json.version>2.1.3</jakarta.json.version>
+        <javax.annotation.version>1.3.2</javax.annotation.version>
+        <jakarta.validation.version>3.1.1</jakarta.validation.version>
+        <jakarta.annotation.version>3.0.0</jakarta.annotation.version>
+        <hibernate.validator.version>9.0.1.Final</hibernate.validator.version>
+        <lombok.version>1.18.38</lombok.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <hutool.version>5.8.39</hutool.version>
+        <guava.version>33.4.8-jre</guava.version>
+
+        <!-- Other dependencies -->
+        <spring-oauth2.version>2.5.2.RELEASE</spring-oauth2.version>
+        <micrometer.version>1.15.2</micrometer.version>
+        <freemarker.version>2.3.34</freemarker.version>
+        <apache.poi.version>5.4.1</apache.poi.version>
+        <apache.commons.version>1.27.1</apache.commons.version>
+        <activation.version>2.1.3</activation.version>
+        <jna.version>5.17.0</jna.version>
+        <oshi.version>6.8.2</oshi.version>
+        <milo.version>0.6.16</milo.version>
+        <paho.mqttv3.version>1.2.5</paho.mqttv3.version>
+        <bouncycastle.version>1.81</bouncycastle.version>
+        <jackson.version>2.19.1</jackson.version>
+        <jaxb.api.version>2.3.1</jaxb.api.version>
+        <jaxb.version>4.0.5</jaxb.version>
+        <snakeyaml.version>2.4</snakeyaml.version>
+
+        <!-- 
+        J-Interop version
+        J-Interop is a Java library that enables Java applications to communicate with DCOM (Distributed Component Object Model) services 
+        running on Microsoft Windows platforms. It provides pure Java implementation of DCOM protocol.
+        Updated on 2025.04.24, all latest, do not update to 3.0.0 or it will cause errors
+        -->
+        <j.interop.version>2.0.4</j.interop.version>
+
+        <!--
+        OS Plugin related dependencies
+        Updated on 2025.04.24, all latest
+         -->
+        <os.maven.plugin.version>1.7.1</os.maven.plugin.version>
+
+        <!-- 
+        Plugin related dependencies
+        Updated on 2025.04.24, all latest
+         -->
+        <protobuf.plugin.version>0.6.1</protobuf.plugin.version>
+        <graalvm.native.version>0.10.6</graalvm.native.version>
+        <maven.gpg.plugin>3.2.8</maven.gpg.plugin>
+        <maven.source.plugin>3.3.1</maven.source.plugin>
+        <maven.javadoc.plugin>3.11.2</maven.javadoc.plugin>
+        <maven.compiler.plugin>3.13.0</maven.compiler.plugin>
+        <maven.resource.plugin>3.3.1</maven.resource.plugin>
+        <maven.dependency.plugin>3.8.1</maven.dependency.plugin>
+        <maven.version.plugin>2.18.0</maven.version.plugin>
+        <maven.central.plugin.version>0.8.0</maven.central.plugin.version>
+
+        <!-- Base Api 相关 -->
+        <base.api.auth.version>2025.7.21</base.api.auth.version>
+        <base.api.data.version>2025.7.21</base.api.data.version>
+        <base.api.driver.version>2025.7.21</base.api.driver.version>
+        <base.api.manager.version>2025.7.21</base.api.manager.version>
+
+        <!-- Base Common 相关 -->
+        <base.common.api.version>2025.7.21</base.common.api.version>
+        <base.common.auth.version>2025.7.21</base.common.auth.version>
+        <base.common.constant.version>2025.7.21</base.common.constant.version>
+        <base.common.dal.version>2025.7.21</base.common.dal.version>
+        <base.common.data.version>2025.7.21</base.common.data.version>
+        <base.common.driver.version>2025.7.21</base.common.driver.version>
+        <base.common.exception.version>2025.7.21</base.common.exception.version>
+        <base.common.gateway.version>2025.7.21</base.common.gateway.version>
+        <base.common.influx.version>2025.7.21</base.common.influx.version>
+        <base.common.log.version>2025.7.21</base.common.log.version>
+        <base.common.manager.version>2025.7.21</base.common.manager.version>
+        <base.common.model.version>2025.7.21</base.common.model.version>
+        <base.common.mqtt.version>2025.7.21</base.common.mqtt.version>
+        <base.common.postgres.version>2025.7.21</base.common.postgres.version>
+        <base.common.public.version>2025.7.21</base.common.public.version>
+        <base.common.quartz.version>2025.7.21</base.common.quartz.version>
+        <base.common.rabbitmq.version>2025.7.21</base.common.rabbitmq.version>
+        <base.common.redis.version>2025.7.21</base.common.redis.version>
+        <base.common.repository.version>2025.7.21</base.common.repository.version>
+        <base.common.thread.version>2025.7.21</base.common.thread.version>
+        <base.common.transfer.version>2025.7.21</base.common.transfer.version>
+        <base.common.web.version>2025.7.21</base.common.web.version>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <!-- You can configure environment variables commonly used in development -->
+                <NODE_ENV>dev</NODE_ENV>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <NODE_ENV>test</NODE_ENV>
+            </properties>
+        </profile>
+        <profile>
+            <id>pre</id>
+            <properties>
+                <NODE_ENV>pre</NODE_ENV>
+            </properties>
+        </profile>
+        <profile>
+            <id>pro</id>
+            <properties>
+                <NODE_ENV>pro</NODE_ENV>
+            </properties>
+        </profile>
+    </profiles>
+
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>version</id>-->
+
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.codehaus.mojo</groupId>-->
+<!--                        <artifactId>versions-maven-plugin</artifactId>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
+
+<!--        <profile>-->
+<!--            <id>native</id>-->
+
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.graalvm.buildtools</groupId>-->
+<!--                        <artifactId>native-maven-plugin</artifactId>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
+
+<!--        <profile>-->
+<!--            <id>deploy</id>-->
+
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.apache.maven.plugins</groupId>-->
+<!--                        <artifactId>maven-source-plugin</artifactId>-->
+<!--                    </plugin>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.apache.maven.plugins</groupId>-->
+<!--                        <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--                    </plugin>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.apache.maven.plugins</groupId>-->
+<!--                        <artifactId>maven-gpg-plugin</artifactId>-->
+<!--                    </plugin>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.sonatype.central</groupId>-->
+<!--                        <artifactId>central-publishing-maven-plugin</artifactId>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+
+<!--        </profile>-->
+<!--    </profiles>-->
+
+    <dependencies>
+
+        <!-- 
+        Spring Boot Configuration Processor
+        Generates metadata about @ConfigurationProperties classes
+        Enables IDE support for custom properties in application.properties/yaml
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- 
+        Spring Boot Test
+        Provides testing utilities and annotations for Spring Boot applications
+        Includes JUnit, Mockito, AssertJ and other testing libraries
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- 
+        SLF4J (Simple Logging Facade for Java)
+        Serves as a simple facade or abstraction for various logging frameworks
+        Please do not configure or upgrade this version, otherwise an error will be reported when logging is started.
+        -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <!-- 
+        Jakarta Annotation API
+        Provides common annotations for Java EE/Jakarta EE applications
+        Used for dependency injection and other container services
+        -->
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+
+        <!-- 
+        Lombok
+        Java library that automatically plugs into your editor
+        Reduces boilerplate code by providing annotations like @Data, @Builder etc
+        -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- 
+        MapStruct
+        Code generator that simplifies the implementation of mappings between Java bean types
+        Provides type-safe and performant way to map between different object models
+        -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <modules>
+        <module>base-api</module>
+        <module>base-common</module>
+        <module>base-center</module>
+        <module>base-driver</module>
+        <module>base-gateway</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- 
+            Spring Boot Dependencies
+            Core Spring Boot dependencies that provide auto-configuration, logging, and other basic features
+            Used as the foundation for building Spring Boot applications
+            -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- 
+            Spring Cloud Dependencies
+            Provides tools for building distributed systems and microservices
+            Includes service discovery, configuration management, circuit breakers etc.
+            -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- 
+            gRPC Dependencies
+            High performance RPC framework developed by Google
+            Enables efficient communication between distributed services
+            -->
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-bom</artifactId>
+                <version>${grpc.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-netty</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-protobuf</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-stub</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
+
+            <!-- 
+            Protocol Buffers Dependencies
+            Google's language-neutral, platform-neutral data serialization format
+            Used for efficient data exchange between services
+            -->
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java-util</artifactId>
+                <version>${protobuf.version}</version>
+            </dependency>
+
+            <!-- 
+            gRPC Spring Boot Integration
+            Provides seamless integration between gRPC and Spring Boot
+            Simplifies building gRPC services in Spring Boot applications
+            -->
+            <dependency>
+                <groupId>net.devh</groupId>
+                <artifactId>grpc-spring-boot-starter</artifactId>
+                <version>${grpc.spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.devh</groupId>
+                <artifactId>grpc-server-spring-boot-starter</artifactId>
+                <version>${grpc.spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.devh</groupId>
+                <artifactId>grpc-client-spring-boot-starter</artifactId>
+                <version>${grpc.spring.boot.version}</version>
+            </dependency>
+
+            <!-- 
+            MyBatis-Plus Dependencies
+            Enhanced version of MyBatis SQL mapper framework
+            Provides additional features like code generation, CRUD operations etc.
+            -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-core</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-annotation</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-jsqlparser</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
+                <version>${mybatis.plus.dynamic.version}</version>
+            </dependency>
+
+            <!-- 
+            JWT (JSON Web Token)
+            Compact URL-safe means of representing claims between parties
+            Used for authentication and information exchange
+            -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+
+            <!-- 
+            OkHttp Dependencies
+            Modern HTTP client for Android and Java applications
+            Supports HTTP/2, connection pooling, and more
+            -->
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>logging-interceptor</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+
+            <!-- 
+            Netty Dependencies
+            Asynchronous event-driven network application framework
+            Used for building high-performance protocol servers & clients
+            -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-resolver-dns-native-macos</artifactId>
+                <version>${netty.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- 
+            Apache Commons IO
+            Library of utilities for developing IO functionality
+            Provides file handling and IO operation utilities
+            -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.io.version}</version>
+            </dependency>
+
+            <!--
+            Jakarta related dependencies
+            - Standard API for processing JSON (JavaScript Object Notation) data
+            - Standard API for data validation and constraint validation
+            -->
+            <dependency>
+                <groupId>jakarta.json</groupId>
+                <artifactId>jakarta.json-api</artifactId>
+                <version>${jakarta.json.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>${jakarta.validation.version}</version>
+            </dependency>
+
+            <!-- 
+            Jakarta Annotation API
+            Provides common annotations for Java EE applications
+            Used for dependency injection and other container services
+            -->
+            <dependency>
+                <groupId>jakarta.annotation</groupId>
+                <artifactId>jakarta.annotation-api</artifactId>
+                <version>${jakarta.annotation.version}</version>
+            </dependency>
+
+            <!-- 
+            Javax Annotation API
+            Legacy annotation API for Java EE applications
+            Maintained for backward compatibility
+            -->
+            <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>javax.annotation-api</artifactId>
+                <version>${javax.annotation.version}</version>
+            </dependency>
+
+            <!--
+            Hibernate Validator
+            Hibernate Validator is a Java Bean validation framework for data validation and constraint validation in Java applications
+            -->
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.validator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator-cdi</artifactId>
+                <version>${hibernate.validator.version}</version>
+            </dependency>
+
+            <!-- 
+            Lombok
+            Java library that automatically plugs into your editor
+            Reduces boilerplate code through annotations
+            -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- 
+            MapStruct
+            Code generator for bean mappings
+            Simplifies implementation of mappings between Java bean types
+            -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- 
+            Lombok MapStruct Binding
+            Integration between Lombok and MapStruct
+            Ensures proper processing order of annotations
+            -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-mapstruct-binding</artifactId>
+                <version>${lombok-mapstruct-binding.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- 
+            Hutool
+            Comprehensive Java utility library
+            Provides tools for encryption, HTTP requests, date operations etc.
+            -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <!-- 
+            Google Guava
+            Suite of core Java libraries from Google
+            Provides utilities for collections, caching, primitives support etc.
+            -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <!-- 
+            Spring Security OAuth2
+            OAuth2 security framework integration for Spring applications
+            Provides authentication and authorization support
+            -->
+            <dependency>
+                <groupId>org.springframework.security.oauth</groupId>
+                <artifactId>spring-security-oauth2</artifactId>
+                <version>${spring-oauth2.version}</version>
+            </dependency>
+
+            <!-- 
+            Micrometer
+            A metrics collection and reporting library that integrates with various monitoring systems
+            Used for application metrics monitoring and performance measurement
+            -->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${micrometer.version}</version>
+            </dependency>
+
+            <!-- 
+            Freemarker
+            A template engine for generating text output based on templates
+            Used for generating dynamic HTML pages, emails, configuration files etc.
+            -->
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
+
+            <!-- 
+            Apache POI
+            Java API for Microsoft Documents
+            Used for reading and writing MS Office files like Excel, Word etc.
+            -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${apache.poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${apache.poi.version}</version>
+            </dependency>
+
+            <!-- 
+            Apache Commons Compress
+            Library for working with compression and archive formats
+            Supports various compression algorithms and archive formats like zip, tar, gzip etc.
+            -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>${apache.commons.version}</version>
+            </dependency>
+
+            <!--
+            Jakarta Activation API
+            Framework for determining the type of arbitrary pieces of data
+            Used for handling MIME types and data activation
+            -->
+            <dependency>
+                <groupId>jakarta.activation</groupId>
+                <artifactId>jakarta.activation-api</artifactId>
+                <version>${activation.version}</version>
+            </dependency>
+
+            <!-- 
+            Java Native Access (JNA)
+            Library for accessing native shared libraries directly from Java
+            Enables Java code to call C/C++ functions
+            -->
+            <dependency>
+                <groupId>net.java.dev.jna</groupId>
+                <artifactId>jna</artifactId>
+                <version>${jna.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.java.dev.jna</groupId>
+                <artifactId>jna-platform</artifactId>
+                <version>${jna.version}</version>
+            </dependency>
+
+            <!-- 
+            OSHI (Operating System and Hardware Information)
+            Library for retrieving system information
+            Provides detailed hardware and OS information across platforms
+            -->
+            <dependency>
+                <groupId>com.github.oshi</groupId>
+                <artifactId>oshi-core</artifactId>
+                <version>${oshi.version}</version>
+            </dependency>
+
+            <!-- 
+            Eclipse Milo OPC UA SDK
+            Implementation of the OPC UA protocol
+            Used for industrial automation and IoT communication
+            -->
+            <dependency>
+                <groupId>org.eclipse.milo</groupId>
+                <artifactId>sdk-client</artifactId>
+                <version>${milo.version}</version>
+            </dependency>
+
+            <!-- 
+            Eclipse Paho MQTT Client
+            Implementation of MQTT protocol clients
+            Used for IoT messaging and lightweight publish-subscribe communication
+            -->
+            <dependency>
+                <groupId>org.eclipse.paho</groupId>
+                <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+                <version>${paho.mqttv3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.paho</groupId>
+                <artifactId>org.eclipse.paho.mqttv5.client</artifactId>
+                <version>${paho.mqttv3.version}</version>
+            </dependency>
+
+            <!--
+            Bouncy Castle Provider
+            Used to provide Java cryptography related functions
+            It is a popular open source cryptographic library that provides many cryptography-related algorithms and functions, 
+            such as symmetric encryption algorithms, asymmetric encryption algorithms, hash functions, digital signatures, certificate generation, etc.
+            -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk18on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
+
+            <!--
+            Java COM related, used to communicate with DCOM (Distributed Component Object Model) services running on Microsoft Windows platforms
+            DCOM (Distributed Component Object Model) is a remote procedure call (RPC) technology developed by Microsoft for inter-component communication across networks on Windows systems.
+            
+            J-Interop provides:
+            - Pure Java implementation of DCOM protocol
+            - COM/DCOM communication without native code
+            - Windows service and registry access
+            - Support for COM automation
+            -->
+            <dependency>
+                <groupId>org.jinterop</groupId>
+                <artifactId>j-interop</artifactId>
+                <version>${j.interop.version}</version>
+            </dependency>
+
+            <!-- 
+            Jackson related dependencies
+            Jackson is a high-performance JSON processor for Java with the following key features:
+            - jackson-core: Core streaming API and implementation for JSON
+            - jackson-annotations: General annotations for Jackson data processor
+            - jackson-databind: Data-binding functionality and tree-model
+            - jackson-dataformat-yaml: YAML format support
+            - jackson-datatype-jdk8: Support for JDK 8 data types
+            - jackson-datatype-jsr310: Support for Java 8 Date & Time API
+            - jackson-module-parameter-names: Support for accessing parameter names
+            -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jdk8</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-parameter-names</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!--
+            JAXB (Java Architecture for XML Binding) API related dependencies
+            
+            Key features:
+            - Converts XML to/from Java objects (marshalling/unmarshalling)
+            - Schema validation
+            - Customizable mapping between XML schema and Java objects
+            - Runtime XML data binding operations
+            - Support for XML schema evolution
+            -->
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-core</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+
+            <!--
+            Java YAML related dependencies
+            SnakeYAML provides:
+            - YAML 1.1 parser and emitter
+            - Support for all YAML types
+            - Dump/load Java objects to/from YAML
+            - Support for recursive objects
+            - High-level API for serialization
+            -->
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snakeyaml.version}</version>
+            </dependency>
+
+            <!-- Base Api 相关 -->
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-api-auth</artifactId>
+                <version>${base.api.auth.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-api-data</artifactId>
+                <version>${base.api.data.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-api-driver</artifactId>
+                <version>${base.api.driver.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-api-manager</artifactId>
+                <version>${base.api.manager.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <!-- Base Common 相关 -->
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-api</artifactId>
+                <version>${base.common.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-auth</artifactId>
+                <version>${base.common.auth.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-constant</artifactId>
+                <version>${base.common.constant.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-dal</artifactId>
+                <version>${base.common.dal.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-data</artifactId>
+                <version>${base.common.data.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-driver</artifactId>
+                <version>${base.common.driver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-exception</artifactId>
+                <version>${base.common.exception.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-gateway</artifactId>
+                <version>${base.common.gateway.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-influx</artifactId>
+                <version>${base.common.influx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-log</artifactId>
+                <version>${base.common.log.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-manager</artifactId>
+                <version>${base.common.manager.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-model</artifactId>
+                <version>${base.common.model.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-mqtt</artifactId>
+                <version>${base.common.mqtt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-postgres</artifactId>
+                <version>${base.common.postgres.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-public</artifactId>
+                <version>${base.common.public.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-quartz</artifactId>
+                <version>${base.common.quartz.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-rabbitmq</artifactId>
+                <version>${base.common.rabbitmq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-redis</artifactId>
+                <version>${base.common.redis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-repository</artifactId>
+                <version>${base.common.repository.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-thread</artifactId>
+                <version>${base.common.thread.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-transfer</artifactId>
+                <version>${base.common.transfer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aiforest.tmiot</groupId>
+                <artifactId>base-common-web</artifactId>
+                <version>${base.common.web.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!-- Spring Boot Maven plugin -->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Protobuf plugin -->
+                <plugin>
+                    <groupId>org.xolstice.maven.plugins</groupId>
+                    <artifactId>protobuf-maven-plugin</artifactId>
+                    <version>${protobuf.plugin.version}</version>
+                    <configuration>
+                        <pluginId>grpc-java</pluginId>
+                        <protoSourceRoot>src/main/protobuf</protoSourceRoot>
+                        <!--suppress UnresolvedMavenProperty -->
+                        <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}
+                        </protocArtifact>
+                        <!--suppress UnresolvedMavenProperty -->
+                        <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}
+                        </pluginArtifact>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>compile</goal>
+                                <goal>compile-custom</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Graalvm plugin -->
+                <plugin>
+                    <groupId>org.graalvm.buildtools</groupId>
+                    <artifactId>native-maven-plugin</artifactId>
+                    <version>${graalvm.native.version}</version>
+                    <executions>
+                        <execution>
+                            <id>build-native</id>
+                            <goals>
+                                <goal>compile-no-fork</goal>
+                            </goals>
+                            <phase>package</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- GPG plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven.gpg.plugin}</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                            <configuration>
+                                <keyname>pnoker</keyname>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Source Plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven.source.plugin}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Javadoc plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven.javadoc.plugin}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Compile plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.plugin}</version>
+                    <configuration>
+                        <parameters>true</parameters>
+                        <target>${java.version}</target>
+                        <source>${java.version}</source>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <useIncrementalCompilation>true</useIncrementalCompilation>
+                        <compilerArgs>
+                            <arg>-parameters</arg>
+                        </compilerArgs>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${mapstruct.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <version>${lombok-mapstruct-binding.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+
+                <!-- Filter file plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven.resource.plugin}</version>
+                    <configuration>
+                        <nonFilteredFileExtensions>
+                            <nonFilteredFileExtension>ico</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>db</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>key</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>crt</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>p12</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>proto</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>json</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>xls</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
+                        </nonFilteredFileExtensions>
+                    </configuration>
+                </plugin>
+
+                <!-- Maven Dependency plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven.dependency.plugin}</version>
+                    <executions>
+                        <execution>
+                            <id>display-dependency-tree</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>tree</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Maven Version plugin -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${maven.version.plugin}</version>
+                    <executions>
+                        <execution>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>display-plugin-updates</goal>
+                                <goal>display-property-updates</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!--  Central Maven plugin -->
+                <plugin>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>${maven.central.plugin.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <publishingServerId>pnoker</publishingServerId>
+                        <autoPublish>true</autoPublish>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

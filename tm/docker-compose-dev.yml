@@ -1,0 +1,290 @@
+#
+# Copyright 2016-present the TM IoT original author or authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+services:
+  gateway:
+    build:
+      context: ../base-gateway/
+      dockerfile: ./Dockerfile
+    image: pnoker/base-gateway:2025.6.5
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=test
+      - APM_AGENT_ENABLE=false
+    container_name: base-gateway
+    hostname: base-gateway
+    volumes:
+      - logs:/base-gateway/base/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-gateway
+
+  auth:
+    build:
+      context: ../base-center/base-center-auth/
+      dockerfile: ./Dockerfile
+    image: pnoker/base-center-auth:2025.6.5
+    restart: always
+    ports:
+      - "8300:8300"
+      - "9300:9300"
+    environment:
+      - NODE_ENV=test
+      - APM_AGENT_ENABLE=false
+    container_name: base-center-auth
+    hostname: base-center-auth
+    volumes:
+      - logs:/base-center/base-center-auth/base/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-center-auth
+
+  manager:
+    build:
+      context: ../base-center/base-center-manager/
+      dockerfile: ./Dockerfile
+    image: pnoker/base-center-manager:2025.6.5
+    restart: always
+    ports:
+      - "8400:8400"
+      - "9400:9400"
+    environment:
+      - NODE_ENV=test
+      - APM_AGENT_ENABLE=false
+    container_name: base-center-manager
+    hostname: base-center-manager
+    volumes:
+      - logs:/base-center/base-center-manager/base/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-center-manager
+
+  data:
+    build:
+      context: ../base-center/base-center-data/
+      dockerfile: ./Dockerfile
+    image: pnoker/base-center-data:2025.6.5
+    restart: always
+    ports:
+      - "8500:8500"
+      - "9500:9500"
+    environment:
+      - NODE_ENV=test
+      - APM_AGENT_ENABLE=false
+    container_name: base-center-data
+    hostname: base-center-data
+    volumes:
+      - logs:/base-center/base-center-data/base/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-center-data
+
+  listening-virtual:
+    build:
+      context: ../base-driver/base-driver-listening-virtual/
+      dockerfile: ./Dockerfile
+    image: pnoker/base-driver-listening-virtual:2025.6.5
+    restart: always
+    ports:
+      - "6270:6270"
+      - "6271:6271"
+    environment:
+      - NODE_ENV=test
+      - APM_AGENT_ENABLE=false
+    container_name: base-driver-listening-virtual
+    hostname: base-driver-listening-virtual
+    volumes:
+      - logs:/base-driver/base-driver-listening-virtual/base/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-driver-listening-virtual
+
+  modbus-tcp:
+    build:
+      context: ../base-driver/base-driver-modbus-tcp/
+      dockerfile: ./Dockerfile
+    image: pnoker/base-driver-modbus-tcp:2025.6.5
+    restart: always
+    environment:
+      - NODE_ENV=test
+      - APM_AGENT_ENABLE=false
+    container_name: base-driver-modbus-tcp
+    hostname: base-driver-modbus-tcp
+    volumes:
+      - logs:/base-driver/base-driver-modbus-tcp/base/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-driver-modbus-tcp
+
+  mqtt:
+    build:
+      context: ../base-driver/base-driver-mqtt/
+      dockerfile: ./Dockerfile
+    image: pnoker/base-driver-mqtt:2025.6.5
+    restart: always
+    environment:
+      - NODE_ENV=test
+      - APM_AGENT_ENABLE=false
+    container_name: base-driver-mqtt
+    hostname: base-driver-mqtt
+    volumes:
+      - logs:/base-driver/base-driver-mqtt/base/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-driver-mqtt
+
+  opc-da:
+    build:
+      context: ../base-driver/base-driver-opc-da/
+      dockerfile: ./Dockerfile
+    image: pnoker/base-driver-opc-da:2025.6.5
+    restart: always
+    environment:
+      - NODE_ENV=test
+      - APM_AGENT_ENABLE=false
+    container_name: base-driver-opc-da
+    hostname: base-driver-opc-da
+    volumes:
+      - logs:/base-driver/base-driver-opc-da/base/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-driver-opc-da
+
+  opc-ua:
+    build:
+      context: ../base-driver/base-driver-opc-ua/
+      dockerfile: ./Dockerfile
+    image: pnoker/base-driver-opc-ua:2025.6.5
+    restart: always
+    environment:
+      - NODE_ENV=test
+      - APM_AGENT_ENABLE=false
+    container_name: base-driver-opc-ua
+    hostname: base-driver-opc-ua
+    volumes:
+      - logs:/base-driver/base-driver-opc-ua/base/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-driver-opc-ua
+
+  plcs7:
+    build:
+      context: ../base-driver/base-driver-plcs7/
+      dockerfile: ./Dockerfile
+    image: pnoker/base-driver-plcs7:2025.6.5
+    restart: always
+    environment:
+      - NODE_ENV=test
+      - APM_AGENT_ENABLE=false
+    container_name: base-driver-plcs7
+    hostname: base-driver-plcs7
+    volumes:
+      - logs:/base-driver/base-driver-plcs7/base/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-driver-plcs7
+
+  virtual:
+    build:
+      context: ../base-driver/base-driver-virtual/
+      dockerfile: ./Dockerfile
+    image: pnoker/base-driver-virtual:2025.6.5
+    restart: always
+    environment:
+      - NODE_ENV=test
+      - APM_AGENT_ENABLE=false
+    container_name: base-driver-virtual
+    hostname: base-driver-virtual
+    volumes:
+      - logs:/base-driver/base-driver-virtual/base/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-driver-virtual
+
+volumes:
+  logs:
+
+networks:
+  net:
+    driver: bridge

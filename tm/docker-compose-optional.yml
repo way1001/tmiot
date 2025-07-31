@@ -1,0 +1,48 @@
+#
+# Copyright 2016-present the TM IoT original author or authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+services:
+  emqx:
+    image: pnoker/base-emqx:2025.2
+    restart: always
+    ports:
+      - "38083:8083"
+      - "38084:8084"
+      - "31883:1883"
+      - "38883:8883"
+      - "18083:18083"
+    container_name: base-emqx
+    hostname: base-emqx
+    volumes:
+      - emqx_data:/opt/emqx/data
+      - emqx_log:/opt/emqx/log
+    logging:
+      driver: json-file
+      options:
+        max-size: "10M"
+        max-file: "20"
+    networks:
+      net:
+        aliases:
+          - base-emqx
+
+volumes:
+  emqx_data:
+  emqx_log:
+
+networks:
+  net:
+    driver: bridge

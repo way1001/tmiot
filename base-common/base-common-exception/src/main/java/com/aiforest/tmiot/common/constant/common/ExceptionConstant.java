@@ -1,0 +1,46 @@
+/*
+ * Copyright 2016-present the TM IoT original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.aiforest.tmiot.common.constant.common;
+
+/**
+ * 异常 相关常量
+ *
+ * @author way
+ * @version 2025.7.0
+ * @since 2022.1.0
+ */
+public class ExceptionConstant {
+
+    /**
+     * 公共类实例化错误提示
+     */
+    public static final String UTILITY_CLASS = "Utility class";
+
+    /**
+     * 没有可用的服务
+     */
+    public static final String NO_AVAILABLE_SERVER = "No available server for client";
+
+    /**
+     * 租户, 用户信息不匹配
+     */
+    public static final String NO_AVAILABLE_AUTH = "Tenant, user information does not match";
+
+    private ExceptionConstant() {
+        throw new IllegalStateException(ExceptionConstant.UTILITY_CLASS);
+    }
+}

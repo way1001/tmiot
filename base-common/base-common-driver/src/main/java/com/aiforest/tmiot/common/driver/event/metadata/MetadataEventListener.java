@@ -1,0 +1,63 @@
+/*
+ * Copyright 2016-present the TM IoT original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.aiforest.tmiot.common.driver.event.metadata;
+
+import com.aiforest.tmiot.common.driver.service.DriverCustomService;
+import com.aiforest.tmiot.common.entity.dto.MetadataEventDTO;
+import com.aiforest.tmiot.common.entity.event.MetadataEvent;
+import com.aiforest.tmiot.common.enums.MetadataTypeEnum;
+import com.aiforest.tmiot.common.utils.JsonUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
+
+/**
+ * 元数据事件 Listener
+ *
+ * @author zhangzi
+ * @version 2025.7.0
+ * @since 2022.1.0
+ */
+@Slf4j
+@Component
+public class MetadataEventListener implements ApplicationListener<MetadataEvent> {
+
+    private final DriverCustomService driverCustomService;
+
+    public MetadataEventListener(DriverCustomService driverCustomService) {
+        this.driverCustomService = driverCustomService;
+    }
+
+    @Override
+    public void onApplicationEvent(MetadataEvent metadataEvent) {
+        log.info("Metadata event listener received: {}", JsonUtil.toJsonString(metadataEvent));
+        MetadataTypeEnum metadataType = metadataEvent.getMetadataType();
+        if (MetadataTypeEnum.DEVICE.equals(metadataType)) {
+            MetadataEventDTO entityEvent = new MetadataEventDTO();
+            entityEvent.setId(metadataEvent.getId());
+            entityEvent.setMetadataType(MetadataTypeEnum.DEVICE);
+            entityEvent.setOperateType(metadataEvent.getOperateType());
+            driverCustomService.event(entityEvent);
+        } else if (MetadataTypeEnum.POINT.equals(metadataType)) {
+            MetadataEventDTO entityEvent = new MetadataEventDTO();
+            entityEvent.setId(metadataEvent.getId());
+            entityEvent.setMetadataType(MetadataTypeEnum.POINT);
+            entityEvent.setOperateType(metadataEvent.getOperateType());
+            driverCustomService.event(entityEvent);
+        }
+    }
+}

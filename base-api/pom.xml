@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright 2016-present the TM IoT original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.aiforest.tmiot</groupId>
+        <artifactId>tmiot</artifactId>
+        <version>2025.7.21</version>
+        <!--        <relativePath/>-->
+    </parent>
+
+    <name>${project.artifactId}</name>
+    <artifactId>base-api</artifactId>
+    <version>2025.7.21</version>
+    <packaging>pom</packaging>
+
+    <!--    <inceptionYear>2025-present</inceptionYear>-->
+    <!--    <url>https://aiforest.com/tmiot</url>-->
+    <!--    <description>-->
+    <!--        TM IOT 平台 公共配置。-->
+    <!--    </description>-->
+
+    <!--    <developers>-->
+    <!--        <developer>-->
+    <!--            <id>way</id>-->
+    <!--            <name>way</name>-->
+    <!--            <email>way1001@yeah.net</email>-->
+    <!--            <roles>-->
+    <!--                <role>XXX</role>-->
+    <!--            </roles>-->
+    <!--            <organization>aiforest.com</organization>-->
+    <!--            <url>https://github.com/aiforest.com/tmiot</url>-->
+    <!--        </developer>-->
+    <!--    </developers>-->
+
+    <!--    <scm>-->
+    <!--        <url>https://github.com/way1001/tmiot</url>-->
+    <!--        <connection>https://github.com/way1001/tmiot.git</connection>-->
+    <!--        <developerConnection>https://github.com/way1001/tmiot.git</developerConnection>-->
+    <!--    </scm>-->
+
+    <properties>
+        <!-- Base Common Api -->
+        <base.common.api.version>2025.7.21</base.common.api.version>
+    </properties>
+
+    <modules>
+        <module>base-api-auth</module>
+        <module>base-api-data</module>
+        <module>base-api-driver</module>
+        <module>base-api-manager</module>
+    </modules>
+
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>deploy</id>-->
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.apache.maven.plugins</groupId>-->
+<!--                        <artifactId>maven-source-plugin</artifactId>-->
+<!--                    </plugin>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.apache.maven.plugins</groupId>-->
+<!--                        <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--                    </plugin>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.apache.maven.plugins</groupId>-->
+<!--                        <artifactId>maven-gpg-plugin</artifactId>-->
+<!--                    </plugin>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.sonatype.plugins</groupId>-->
+<!--                        <artifactId>nexus-staging-maven-plugin</artifactId>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+
+<!--            <distributionManagement>-->
+<!--                <repository>-->
+<!--                    <id>pnoker</id>-->
+<!--                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+<!--                </repository>-->
+<!--                <snapshotRepository>-->
+<!--                    <id>pnoker</id>-->
+<!--                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
+<!--                </snapshotRepository>-->
+<!--            </distributionManagement>-->
+<!--        </profile>-->
+<!--    </profiles>-->
+
+    <dependencies>
+
+        <!-- Base Common Api -->
+        <dependency>
+            <groupId>com.aiforest.tmiot</groupId>
+            <artifactId>base-common-api</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <extensions>
+            <!-- OS 插件 -->
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>${os.maven.plugin.version}</version>
+            </extension>
+        </extensions>
+
+        <plugins>
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,59 @@
+#
+# Copyright 2016-present the TM IoT original author or authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# Test environment configuration will overwrite the content configured in application-*.yml
+spring:
+  cloud:
+    gateway:
+      routes:
+        # token
+        - id: auth_route_token
+          uri: http://${CENTER_AUTH_HOST:base-center-auth}:8300/
+          predicates:
+            - Path=/api/v3/auth/token/**
+        # auth
+        - id: auth_route
+          uri: http://${CENTER_AUTH_HOST:base-center-auth}:8300
+          predicates:
+            - Path=/api/v3/auth/user/**,/api/v3/auth/tenant/**,/api/v3/auth/dictionary/**
+          filters:
+            - Authentic
+        # manager
+        - id: manager_route
+          uri: http://${CENTER_MANAGER_HOST:base-center-manager}:8400
+          predicates:
+            - Path=/api/v3/manager/**
+          filters:
+            - Authentic
+        # data
+        - id: data_route
+          uri: http://${CENTER_DATA_HOST:base-center-data}:8500
+          predicates:
+            - Path=/api/v3/data/**
+          filters:
+            - Authentic
+
+grpc:
+  client:
+    base-center-auth:
+      address: 'static://${CENTER_AUTH_HOST:base-center-auth}:9300'
+      enable-keep-alive: true
+      keep-alive-without-calls: true
+      negotiation-type: plaintext
+
+logging:
+  level:
+    com.aiforest.tmiot: DEBUG

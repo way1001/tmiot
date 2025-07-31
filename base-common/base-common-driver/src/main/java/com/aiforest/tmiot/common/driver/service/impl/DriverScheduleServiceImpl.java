@@ -1,0 +1,98 @@
+/*
+ * Copyright 2016-present the TM IoT original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.aiforest.tmiot.common.driver.service.impl;
+
+import com.aiforest.tmiot.common.constant.driver.ScheduleConstant;
+import com.aiforest.tmiot.common.driver.entity.property.DriverProperties;
+import com.aiforest.tmiot.common.driver.job.DriverCustomScheduleJob;
+import com.aiforest.tmiot.common.driver.job.DriverReadScheduleJob;
+import com.aiforest.tmiot.common.driver.job.DriverStatusScheduleJob;
+import com.aiforest.tmiot.common.driver.service.DriverScheduleService;
+import com.aiforest.tmiot.common.exception.CronException;
+import com.aiforest.tmiot.common.quartz.QuartzService;
+import lombok.extern.slf4j.Slf4j;
+import org.quartz.CronExpression;
+import org.quartz.SchedulerException;
+import org.springframework.stereotype.Service;
+
+import java.util.Objects;
+
+/**
+ * @author way
+ * @version 2025.7.0
+ * @since 2022.1.0
+ */
+@Slf4j
+@Service
+public class DriverScheduleServiceImpl implements DriverScheduleService {
+
+    private final DriverProperties driverProperties;
+    private final QuartzService quartzService;
+
+    public DriverScheduleServiceImpl(DriverProperties driverProperties, QuartzService quartzService) {
+        this.driverProperties = driverProperties;
+        this.quartzService = quartzService;
+    }
+
+    @Override
+    public void initial() {
+        // Get schedule properties from driver configuration
+        DriverProperties.ScheduleProperties property = driverProperties.getSchedule();
+        if (Objects.isNull(property)) {
+            return;
+        }
+
+        try {
+            // Create and schedule the driver status monitoring job
+            quartzService.createJobWithCron(ScheduleConstant.DRIVER_SCHEDULE_GROUP,
+                    ScheduleConstant.DRIVER_STATUS_SCHEDULE_JOB,
+                    ScheduleConstant.DRIVER_STATUS_SCHEDULE_CRON,
+                    DriverStatusScheduleJob.class);
+
+            // Create and schedule the read job if enabled
+            if (Boolean.TRUE.equals(property.getRead().getEnable())) {
+                // Validate read job cron expression
+                if (!CronExpression.isValidExpression(property.getRead().getCron())) {
+                    throw new CronException("Read schedule cron expression is invalid");
+                }
+                quartzService.createJobWithCron(ScheduleConstant.DRIVER_SCHEDULE_GROUP,
+                        ScheduleConstant.DRIVER_READ_SCHEDULE_JOB,
+                        property.getRead().getCron(),
+                        DriverReadScheduleJob.class);
+            }
+
+            // Create and schedule the custom job if enabled
+            if (Boolean.TRUE.equals(property.getCustom().getEnable())) {
+                // Validate custom job cron expression
+                if (!CronExpression.isValidExpression(property.getCustom().getCron())) {
+                    throw new CronException("Custom schedule cron expression is invalid");
+                }
+                quartzService.createJobWithCron(ScheduleConstant.DRIVER_SCHEDULE_GROUP,
+                        ScheduleConstant.DRIVER_CUSTOM_SCHEDULE_JOB,
+                        property.getCustom().getCron(),
+                        DriverCustomScheduleJob.class);
+            }
+
+            // Start the scheduler after all jobs are configured
+            quartzService.startScheduler();
+        } catch (SchedulerException e) {
+            // Log any scheduler initialization errors
+            log.error("Driver schedule initial error: {}", e.getMessage(), e);
+        }
+    }
+
+}

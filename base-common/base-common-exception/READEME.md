@@ -1,0 +1,1 @@
+TM IoT 平台 公共的 Exception 配置。
