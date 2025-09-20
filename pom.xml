@@ -1119,7 +1119,7 @@
                                 <goal>sign</goal>
                             </goals>
                             <configuration>
-                                <keyname>pnoker</keyname>
+                                <keyname>way</keyname>
                             </configuration>
                         </execution>
                     </executions>
@@ -1248,7 +1248,7 @@
                     <version>${maven.central.plugin.version}</version>
                     <extensions>true</extensions>
                     <configuration>
-                        <publishingServerId>pnoker</publishingServerId>
+                        <publishingServerId>way</publishingServerId>
                         <autoPublish>true</autoPublish>
                     </configuration>
                 </plugin>

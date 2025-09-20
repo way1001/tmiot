@@ -367,11 +367,26 @@ public class DriverCustomServiceImpl implements DriverCustomService {
      */
     private <T> void setMasterValue(ModbusMaster modbusMaster, BaseLocator<T> locator, WValue wValue) {
         try {
-            modbusMaster.setValue(locator, wValue.getValue(Float.class));
+            modbusMaster.setValue(locator, wValue.getValue(getTargetClass(wValue.getType())));
         } catch (ModbusTransportException | ErrorResponseException e) {
             log.error("Write modbus master value error: {}", e.getMessage(), e);
             throw new WritePointException(e.getMessage());
         }
+    }
+
+    // 1. 定义根据 Type 枚举获取对应 Class 的方法
+    private Class<?> getTargetClass(PointTypeFlagEnum type) {
+        return switch (type) {
+            case STRING -> String.class;
+            case BYTE -> Byte.class;
+            case SHORT -> Short.class;  // 对应 Short 类型
+            case INT -> Integer.class;
+            case LONG -> Long.class;
+            case FLOAT -> Float.class;
+            case DOUBLE -> Double.class;
+            case BOOLEAN -> Boolean.class;
+            default -> throw new IllegalArgumentException("不支持的类型: " + type);
+        };
     }
 
 }

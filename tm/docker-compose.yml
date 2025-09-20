@@ -16,7 +16,7 @@
 
 services:
   gateway:
-    image: pnoker/base-gateway:2025.6.5
+    image: way/base-gateway:2025.6.5
     restart: always
     ports:
       - "8000:8000"
@@ -38,7 +38,7 @@ services:
           - base-gateway
 
   auth:
-    image: pnoker/base-center-auth:2025.6.5
+    image: way/base-center-auth:2025.6.5
     restart: always
     ports:
       - "8300:8300"
@@ -61,7 +61,7 @@ services:
           - base-center-auth
 
   manager:
-    image: pnoker/base-center-manager:2025.6.5
+    image: way/base-center-manager:2025.6.5
     restart: always
     ports:
       - "8400:8400"
@@ -84,7 +84,7 @@ services:
           - base-center-manager
 
   data:
-    image: pnoker/base-center-data:2025.6.5
+    image: way/base-center-data:2025.6.5
     restart: always
     ports:
       - "8500:8500"
@@ -107,7 +107,7 @@ services:
           - base-center-data
 
   listening-virtual:
-    image: pnoker/base-driver-listening-virtual:2025.6.5
+    image: way/base-driver-listening-virtual:2025.6.5
     restart: always
     ports:
       - "6270:6270"
@@ -130,7 +130,7 @@ services:
           - base-driver-listening-virtual
 
   modbus-tcp:
-    image: pnoker/base-driver-modbus-tcp:2025.6.5
+    image: way/base-driver-modbus-tcp:2025.6.5
     restart: always
     environment:
       - NODE_ENV=test
@@ -150,7 +150,7 @@ services:
           - base-driver-modbus-tcp
 
   mqtt:
-    image: pnoker/base-driver-mqtt:2025.6.5
+    image: way/base-driver-mqtt:2025.6.5
     restart: always
     environment:
       - NODE_ENV=test
@@ -170,7 +170,7 @@ services:
           - base-driver-mqtt
 
   opc-da:
-    image: pnoker/base-driver-opc-da:2025.6.5
+    image: way/base-driver-opc-da:2025.6.5
     restart: always
     environment:
       - NODE_ENV=test
@@ -190,7 +190,7 @@ services:
           - base-driver-opc-da
 
   opc-ua:
-    image: pnoker/base-driver-opc-ua:2025.6.5
+    image: way/base-driver-opc-ua:2025.6.5
     restart: always
     environment:
       - NODE_ENV=test
@@ -210,7 +210,7 @@ services:
           - base-driver-opc-ua
 
   plcs7:
-    image: pnoker/base-driver-plcs7:2025.6.5
+    image: way/base-driver-plcs7:2025.6.5
     restart: always
     environment:
       - NODE_ENV=test
@@ -230,7 +230,7 @@ services:
           - base-driver-plcs7
 
   virtual:
-    image: pnoker/base-driver-virtual:2025.6.5
+    image: way/base-driver-virtual:2025.6.5
     restart: always
     environment:
       - NODE_ENV=test

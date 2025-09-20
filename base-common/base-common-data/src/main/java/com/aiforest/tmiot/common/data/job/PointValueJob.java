@@ -92,13 +92,14 @@ public class PointValueJob extends QuartzJobBean {
         }
 
         // Save point value array to Redis & MongoDB
-        threadPoolExecutor.execute(() -> {
-            VALUE_LOCK.writeLock().lock();
-            if (!POINT_VALUE_LIST.isEmpty()) {
-                pointValueService.save(POINT_VALUE_LIST);
-                clearPointValues();
-            }
-            VALUE_LOCK.writeLock().unlock();
-        });
+        //TODO  second task to save list data
+//        threadPoolExecutor.execute(() -> {
+//            VALUE_LOCK.writeLock().lock();
+//            if (!POINT_VALUE_LIST.isEmpty()) {
+//                pointValueService.save(POINT_VALUE_LIST);
+//                clearPointValues();
+//            }
+//            VALUE_LOCK.writeLock().unlock();
+//        });
     }
 }

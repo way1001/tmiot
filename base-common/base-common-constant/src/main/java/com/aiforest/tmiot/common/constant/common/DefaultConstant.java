@@ -48,7 +48,7 @@ public class DefaultConstant {
     /**
      * 默认 String 空值: nil
      */
-    public static final String USER_NAME = "pnoker";
+    public static final String USER_NAME = "way";
 
     /**
      * 默认 String 空值: nil

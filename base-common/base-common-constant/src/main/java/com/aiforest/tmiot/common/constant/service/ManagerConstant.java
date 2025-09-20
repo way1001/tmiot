@@ -45,6 +45,8 @@ public class ManagerConstant {
     public static final String LABEL_URL_PREFIX = "/label";
     public static final String DICTIONARY_URL_PREFIX = "/dictionary";
     public static final String TOPIC_URL_PREFIX = "/topic";
+    public static final String DEVICE_COORDINATE_ATTRIBUTE_URL_PREFIX = "/device_coordinate_attribute";
+    public static final String DEVICE_COORDINATE_BIND_URL_PREFIX = "/device_coordinate_bind";
 
     private ManagerConstant() {
         throw new IllegalStateException(ExceptionConstant.UTILITY_CLASS);

@@ -15,9 +15,9 @@
 #
 
 # runtime
-FROM pnoker/dc3-jre:2025.2 AS runtime
-LABEL dc3.author=pnoker
-LABEL dc3.author.email=pnokers.icloud.com
+FROM way/dc3-jre:2025.2 AS runtime
+LABEL dc3.author=way
+LABEL dc3.author.email=ways.icloud.com
 
 # default env
 ENV PARAMS=''

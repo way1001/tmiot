@@ -98,4 +98,15 @@ public class TokenController implements BaseController {
         return Mono.just(R.ok(valid, message));
     }
 
+//    /**
+//     * 注销用户的Token令牌
+//     *
+//     * @param login 登录信息
+//     * @return 是否注销
+//     */
+//    @PostMapping("/cancel")
+//    public R<Boolean> cancelToken(@Validated(Update.class) @RequestBody Login login) {
+//        return Boolean.TRUE.equals(tokenService.cancelToken(login.getName(), login.getTenant())) ? R.ok() : R.fail();
+//    }
+
 }

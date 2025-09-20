@@ -16,7 +16,7 @@
 
 services:
   elasticsearch:
-    image: pnoker/base-elasticsearch:2025.2
+    image: way/base-elasticsearch:2025.2
     restart: always
     environment:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
@@ -35,7 +35,7 @@ services:
           - base-elasticsearch
 
   logstash:
-    image: pnoker/base-logstash:2025.2
+    image: way/base-logstash:2025.2
     restart: always
     depends_on:
       - elasticsearch
@@ -57,7 +57,7 @@ services:
           - base-logstash
 
   kibana:
-    image: pnoker/base-kibana:2025.2
+    image: way/base-kibana:2025.2
     restart: always
     depends_on:
       - elasticsearch
@@ -76,7 +76,7 @@ services:
           - base-kibana
 
   apm:
-    image: pnoker/base-apm:2025.2
+    image: way/base-apm:2025.2
     restart: always
     depends_on:
       - elasticsearch

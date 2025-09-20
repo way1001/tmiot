@@ -15,9 +15,9 @@
 #
 
 # runtime
-FROM pnoker/base-jre:2025.2 AS runtime
-LABEL base.author=pnoker
-LABEL base.author.email=pnokers.icloud.com
+FROM way/base-jre:2025.2 AS runtime
+LABEL base.author=way
+LABEL base.author.email=ways.icloud.com
 
 # default env
 ENV PARAMS=''

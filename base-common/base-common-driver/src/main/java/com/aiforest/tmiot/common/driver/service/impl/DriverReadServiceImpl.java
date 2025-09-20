@@ -72,6 +72,7 @@ public class DriverReadServiceImpl implements DriverReadService {
         Map<String, AttributeBO> pointConfig = deviceMetadata.getPointConfig(deviceId, pointId);
 
         // Get point from metadata cache
+//        pointMetadata.loadCache(pointId);
         PointBO point = pointMetadata.getCache(pointId);
         if (Objects.isNull(point)) {
             throw new ReadPointException("Failed to read point value, point[{}] is null" + deviceId);

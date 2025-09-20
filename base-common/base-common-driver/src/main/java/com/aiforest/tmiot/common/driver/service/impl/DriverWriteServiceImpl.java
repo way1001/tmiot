@@ -73,6 +73,7 @@ public class DriverWriteServiceImpl implements DriverWriteService {
             Map<String, AttributeBO> pointConfig = deviceMetadata.getPointConfig(deviceId, pointId);
 
             // Get point from metadata cache
+//            pointMetadata.loadCache(pointId); //TEST
             PointBO point = pointMetadata.getCache(pointId);
             if (Objects.isNull(point)) {
                 throw new ReadPointException("Failed to write point value, point[{}] is null" + deviceId);

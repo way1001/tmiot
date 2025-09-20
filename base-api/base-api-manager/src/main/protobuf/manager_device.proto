@@ -37,6 +37,7 @@ Api
 */
 service DeviceApi {
   rpc SelectByPage (GrpcPageDeviceQuery) returns (GrpcRPageDeviceDTO);
+  rpc SelectByLatestPage (GrpcPageDeviceQuery) returns (GrpcRPageDevicePointsDTO);
   rpc SelectByProfileId (GrpcProfileQuery) returns (GrpcRDeviceListDTO);
   rpc SelectByDriverId (GrpcDriverQuery) returns (GrpcRDeviceListDTO);
   rpc SelectByDeviceId (GrpcDeviceQuery) returns (GrpcRDeviceDTO);
@@ -57,6 +58,16 @@ message GrpcRPageDeviceDTO {
   GrpcPageDeviceDTO data = 2;
 }
 
+//add GrpcRPageDevicePointsDTO
+message GrpcRPageDevicePointsDTO {
+  GrpcR result = 1;
+
+  /*
+  Data
+  */
+  GrpcPageDevicePointsDTO data = 2;
+}
+
 /*
 Device Page
 */
@@ -70,6 +81,21 @@ message GrpcPageDeviceDTO {
   Data
   */
   repeated GrpcDeviceDTO data = 2;
+}
+
+/*
+Device Page
+*/
+message GrpcPageDevicePointsDTO {
+  /*
+  Page
+  */
+  GrpcPage page = 1;
+
+  /*
+  Data
+  */
+  repeated GrpcDevicePointsDTO data = 2;
 }
 
 /*

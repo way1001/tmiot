@@ -74,6 +74,7 @@ public class PointValueReceiver {
                 );
             } else {
                 // Save point value to schedule
+                PointValueJob.VALUE_COUNT.set(0);
                 PointValueJob.VALUE_LOCK.writeLock().lock();
                 PointValueJob.addPointValues(pointValueBO);
                 PointValueJob.VALUE_LOCK.writeLock().unlock();

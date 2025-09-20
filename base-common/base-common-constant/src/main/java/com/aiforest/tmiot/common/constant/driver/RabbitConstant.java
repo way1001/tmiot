@@ -59,8 +59,8 @@ public class RabbitConstant {
     public static String QUEUE_POINT_VALUE = "tmiot.q.value.point";
 
     // Mqtt
-    public static String TOPIC_EXCHANGE_MQTT = "dc3.e.mqtt";
-    public static String QUEUE_MQTT = "dc3.q.mqtt";
+    public static String TOPIC_EXCHANGE_MQTT = "tmiot.e.mqtt";
+    public static String QUEUE_MQTT = "tmiot.q.mqtt";
 
     private RabbitConstant() {
         throw new IllegalStateException(ExceptionConstant.UTILITY_CLASS);

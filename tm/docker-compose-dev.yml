@@ -19,7 +19,7 @@ services:
     build:
       context: ../base-gateway/
       dockerfile: ./Dockerfile
-    image: pnoker/base-gateway:2025.6.5
+    image: way/base-gateway:2025.6.5
     restart: always
     ports:
       - "8000:8000"
@@ -44,7 +44,7 @@ services:
     build:
       context: ../base-center/base-center-auth/
       dockerfile: ./Dockerfile
-    image: pnoker/base-center-auth:2025.6.5
+    image: way/base-center-auth:2025.6.5
     restart: always
     ports:
       - "8300:8300"
@@ -70,7 +70,7 @@ services:
     build:
       context: ../base-center/base-center-manager/
       dockerfile: ./Dockerfile
-    image: pnoker/base-center-manager:2025.6.5
+    image: way/base-center-manager:2025.6.5
     restart: always
     ports:
       - "8400:8400"
@@ -96,7 +96,7 @@ services:
     build:
       context: ../base-center/base-center-data/
       dockerfile: ./Dockerfile
-    image: pnoker/base-center-data:2025.6.5
+    image: way/base-center-data:2025.6.5
     restart: always
     ports:
       - "8500:8500"
@@ -122,7 +122,7 @@ services:
     build:
       context: ../base-driver/base-driver-listening-virtual/
       dockerfile: ./Dockerfile
-    image: pnoker/base-driver-listening-virtual:2025.6.5
+    image: way/base-driver-listening-virtual:2025.6.5
     restart: always
     ports:
       - "6270:6270"
@@ -148,7 +148,7 @@ services:
     build:
       context: ../base-driver/base-driver-modbus-tcp/
       dockerfile: ./Dockerfile
-    image: pnoker/base-driver-modbus-tcp:2025.6.5
+    image: way/base-driver-modbus-tcp:2025.6.5
     restart: always
     environment:
       - NODE_ENV=test
@@ -171,7 +171,7 @@ services:
     build:
       context: ../base-driver/base-driver-mqtt/
       dockerfile: ./Dockerfile
-    image: pnoker/base-driver-mqtt:2025.6.5
+    image: way/base-driver-mqtt:2025.6.5
     restart: always
     environment:
       - NODE_ENV=test
@@ -194,7 +194,7 @@ services:
     build:
       context: ../base-driver/base-driver-opc-da/
       dockerfile: ./Dockerfile
-    image: pnoker/base-driver-opc-da:2025.6.5
+    image: way/base-driver-opc-da:2025.6.5
     restart: always
     environment:
       - NODE_ENV=test
@@ -217,7 +217,7 @@ services:
     build:
       context: ../base-driver/base-driver-opc-ua/
       dockerfile: ./Dockerfile
-    image: pnoker/base-driver-opc-ua:2025.6.5
+    image: way/base-driver-opc-ua:2025.6.5
     restart: always
     environment:
       - NODE_ENV=test
@@ -240,7 +240,7 @@ services:
     build:
       context: ../base-driver/base-driver-plcs7/
       dockerfile: ./Dockerfile
-    image: pnoker/base-driver-plcs7:2025.6.5
+    image: way/base-driver-plcs7:2025.6.5
     restart: always
     environment:
       - NODE_ENV=test
@@ -263,7 +263,7 @@ services:
     build:
       context: ../base-driver/base-driver-virtual/
       dockerfile: ./Dockerfile
-    image: pnoker/base-driver-virtual:2025.6.5
+    image: way/base-driver-virtual:2025.6.5
     restart: always
     environment:
       - NODE_ENV=test

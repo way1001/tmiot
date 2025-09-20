@@ -36,6 +36,7 @@ spring:
         minimum-idle: 4
 
 mybatis-plus:
+  type-handlers-package: com.aiforest.tmiot.common.data.handler   # 放 JacksonNodeTypeHandler 的包
   configuration:
     map-underscore-to-camel-case: true
     default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler

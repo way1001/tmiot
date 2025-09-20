@@ -124,6 +124,7 @@ public class DriverSenderServiceImpl implements DriverSenderService {
                     RabbitConstant.ROUTING_POINT_VALUE_PREFIX + driverProperties.getService(),
                     entityDTO
             );
+//            log.info(RabbitConstant.TOPIC_EXCHANGE_VALUE + RabbitConstant.ROUTING_POINT_VALUE_PREFIX + driverProperties.getService());
         }
     }
 

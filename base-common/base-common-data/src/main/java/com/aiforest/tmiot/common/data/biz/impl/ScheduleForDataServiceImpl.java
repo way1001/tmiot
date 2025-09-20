@@ -19,6 +19,7 @@ package com.aiforest.tmiot.common.data.biz.impl;
 import com.aiforest.tmiot.common.constant.driver.ScheduleConstant;
 import com.aiforest.tmiot.common.data.biz.ScheduleForDataService;
 import com.aiforest.tmiot.common.data.job.HourlyJobForData;
+import com.aiforest.tmiot.common.data.job.NavigationJobForData;
 import com.aiforest.tmiot.common.data.job.PointValueJob;
 import com.aiforest.tmiot.common.quartz.QuartzService;
 import jakarta.annotation.Resource;
@@ -50,6 +51,8 @@ public class ScheduleForDataServiceImpl implements ScheduleForDataService {
 
             // 自定义调度
             quartzService.createJobWithCron(ScheduleConstant.DATA_SCHEDULE_GROUP, "hourly-job", "0 0 0/1 * * ?", HourlyJobForData.class);
+
+            quartzService.createJobWithInterval(ScheduleConstant.DATA_SCHEDULE_GROUP, "navigation-strategy-schedule-job", 1, DateBuilder.IntervalUnit.SECOND, NavigationJobForData.class);
 
             quartzService.startScheduler();
         } catch (SchedulerException e) {

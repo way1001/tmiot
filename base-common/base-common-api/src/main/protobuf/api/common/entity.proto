@@ -83,6 +83,32 @@ message GrpcDeviceDTO {
 }
 
 /*
+DevicePoints
+*/
+message GrpcDevicePointsDTO {
+  /*主键ID*/
+  int64 id = 1;
+
+  string device_name = 2; // 位号名称
+  string device_code = 3; // 位号编号
+  int64 driver_id = 4; // 驱动ID
+  string device_ext = 5; // 设备拓展信息
+  int32 enable_flag = 6; // 使能标识
+  string signature = 7; // 签名
+  int32 version = 8; // 版本
+
+  /*
+  附加字段
+  */
+  repeated GrpcPointDTO points = 9; // point集
+
+  /*
+  租户ID
+  */
+  int64 tenant_id = 10;
+}
+
+/*
 Point
 */
 message GrpcPointDTO {
@@ -104,11 +130,12 @@ message GrpcPointDTO {
   int32 enable_flag = 12; // 使能标识
   string signature = 13; // 签名
   int32 version = 14; // 版本
+  int32 bitwise = 15;
 
   /*
   租户ID
   */
-  int64 tenant_id = 15;
+  int64 tenant_id = 16;
 }
 
 /*

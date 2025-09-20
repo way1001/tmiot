@@ -16,7 +16,7 @@
 
 services:
   prometheus:
-    image: pnoker/base-prometheus:2025.2
+    image: way/base-prometheus:2025.2
     restart: always
     container_name: base-prometheus
     hostname: base-prometheus
@@ -36,7 +36,7 @@ services:
           - base-prometheus
 
   postgres-exporter:
-    image: pnoker/base-postgres-exporter:2025.2
+    image: way/base-postgres-exporter:2025.2
     restart: always
     container_name: base-postgres-exporter
     hostname: base-postgres-exporter
@@ -51,7 +51,7 @@ services:
           - base-postgres-exporter
 
   redis-exporter:
-    image: pnoker/base-redis-exporter:2025.2
+    image: way/base-redis-exporter:2025.2
     restart: always
     container_name: base-redis-exporter
     hostname: base-redis-exporter
@@ -66,7 +66,7 @@ services:
           - base-redis-exporter
 
   nginx-exporter:
-    image: pnoker/base-nginx-exporter:2025.2
+    image: way/base-nginx-exporter:2025.2
     restart: always
     container_name: base-nginx-exporter
     hostname: base-nginx-exporter
@@ -81,7 +81,7 @@ services:
           - base-nginx-exporter
 
   grafana:
-    image: pnoker/base-grafana:2025.2
+    image: way/base-grafana:2025.2
     restart: always
     ports:
       - "3000:3000"
