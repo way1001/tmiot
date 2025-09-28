@@ -76,30 +76,40 @@ public class NettyServerHandler {
             int end = infoMap.get("end").getValue(Integer.class);
 
             if (infoMap.get("key").getValue().equals(hexKey)) {
-                String value = switch (point.getPointName()) {
-                    case "左轮速度" -> String.valueOf(byteBuf.getShort(start));
-                    case "右轮速度" -> String.valueOf(byteBuf.getShort(start));
-//                    case "方向" -> String.valueOf(byteBuf.getInt(start));
-                    case "控制模式" -> String.valueOf(byteBuf.getByte(start));
-                    case "工作状态" -> String.valueOf(byteBuf.getShort(start));
-                    case "基础状态" -> String.valueOf(byteBuf.getByte(start));
-                    case "条筒电量" -> String.valueOf(byteBuf.getShort(start));
-                    case "充电到位" -> String.valueOf(byteBuf.getByte(start));
-                    case "补筒信号" -> String.valueOf(byteBuf.getByte(start));
-                    case "推筒完成" -> String.valueOf(byteBuf.getByte(start));
-                    case "待机标志" -> String.valueOf(byteBuf.getByte(start));
-                    case "满筒信号" -> String.valueOf(byteBuf.getByte(start));
-                    case "自清洁标志" -> String.valueOf(byteBuf.getByte(start));
-                    case "左出筒方向" -> String.valueOf(byteBuf.getByte(start));
-                    case "充电完成" -> String.valueOf(byteBuf.getByte(start));
-                    case "旋转计数" -> String.valueOf(byteBuf.getShort(start));
-                    case "当前坐标" -> String.valueOf(byteBuf.getInt(start));
-                    case "导航路径" -> String.valueOf(start);
-                    case "经纬" -> byteBuf.toString(start, end, CharsetUtil.CHARSET_ISO_8859_1).trim();
+                String value = switch (point.getPointCode()) {
+                    case "ctrl_mode" -> String.valueOf(byteBuf.getByte(start));
+                    case "run_state", "nav_mode", "battery_voltage", "blind_dist" -> String.valueOf(byteBuf.getShort(start));
+                    case "current_tag" -> String.valueOf(byteBuf.getInt(start));
+//                    case "nav_route" -> String.valueOf(byteBuf.getByte(start));
+                    case "nav_route" -> byteBuf.toString(start, byteBuf.readableBytes() - start, CharsetUtil.CHARSET_ISO_8859_1).trim();
                     default -> CharSequenceUtil.EMPTY;
                 };
+//                String value = switch (point.getPointName()) {
+//                    case "左轮速度" -> String.valueOf(byteBuf.getShort(start));
+//                    case "右轮速度" -> String.valueOf(byteBuf.getShort(start));
+////                    case "方向" -> String.valueOf(byteBuf.getInt(start));
+//                    case "控制模式" -> String.valueOf(byteBuf.getByte(start));
+//                    case "工作状态" -> String.valueOf(byteBuf.getShort(start));
+//                    case "基础状态" -> String.valueOf(byteBuf.getByte(start));
+//                    case "条筒电量" -> String.valueOf(byteBuf.getShort(start));
+//                    case "充电到位" -> String.valueOf(byteBuf.getByte(start));
+//                    case "补筒信号" -> String.valueOf(byteBuf.getByte(start));
+//                    case "推筒完成" -> String.valueOf(byteBuf.getByte(start));
+//                    case "待机标志" -> String.valueOf(byteBuf.getByte(start));
+//                    case "满筒信号" -> String.valueOf(byteBuf.getByte(start));
+//                    case "自清洁标志" -> String.valueOf(byteBuf.getByte(start));
+//                    case "左出筒方向" -> String.valueOf(byteBuf.getByte(start));
+//                    case "充电完成" -> String.valueOf(byteBuf.getByte(start));
+//                    case "旋转计数" -> String.valueOf(byteBuf.getShort(start));
+//                    case "当前坐标" -> String.valueOf(byteBuf.getInt(start));
+//                    case "导航路径" -> String.valueOf(start);
+//                    case "经纬" -> byteBuf.toString(start, end, CharsetUtil.CHARSET_ISO_8859_1).trim();
+//                    default -> CharSequenceUtil.EMPTY;
+//                };
 
-                if (CharSequenceUtil.isNotEmpty(value)) {
+                if (CharSequenceUtil.isNotEmpty(value) && !point.getPointTypeFlag().getCode().equals("string")) {
+                    pointValues.add(new PointValue(new RValue(device, point, value)));
+                } else {
                     pointValues.add(new PointValue(new RValue(device, point, value)));
                 }
             }

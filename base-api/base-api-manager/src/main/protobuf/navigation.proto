@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package navigation;
+
+option java_multiple_files = true;
+option java_package = "com.aiforest.tmiot.api.center.manager";
+option java_outer_classname = "NavigationProto";
+option objc_class_prefix = "Manager";
+
+service NavigationPathGrpc {
+  rpc PlanPath (PlanPathRequest) returns (PlanPathReply);
+}
+
+message PlanPathRequest {
+  int64 overview_id = 1;
+  int64 from_node_id = 2;
+  int64 to_node_id   = 3;
+}
+
+message NavPathPoint {
+  int32 grid_x = 1;
+  int32 grid_y = 2;
+  int32 angle  = 3;
+}
+
+message PlanPathReply {
+  repeated NavPathPoint path = 1;
+}

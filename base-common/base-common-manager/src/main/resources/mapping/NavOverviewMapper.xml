@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aiforest.tmiot.common.manager.mapper.NavOverviewMapper">
+    <!-- 分页查询自定导航总览 -->
+    <select id="selectOverviewPage" resultType="com.aiforest.tmiot.common.manager.entity.model.CusNavOverviewDO">
+        SELECT
+        id,
+        nav_name,
+        width_px,
+        height_px,
+        origin_x_px,
+        origin_y_px,
+        enable_flag,
+        tenant_id,
+        remark,
+        creator_id,
+        creator_name,
+        create_time,
+        operator_id,
+        operator_name,
+        operate_time,
+        deleted
+        FROM
+        tm_cus_nav_overview
+        WHERE
+        deleted = 0
+        AND tenant_id = #{query.tenantId}
+        <if test="query.enableFlag != null">
+            AND enable_flag = #{query.enableFlag.index}
+        </if>
+        <if test="query.navName != null and query.navName != ''">
+            AND nav_name LIKE CONCAT('%', #{query.navName}, '%')
+        </if>
+        ORDER BY
+        create_time DESC
+    </select>
+
+    <!-- 根据总览ID查询导航节点 -->
+    <select id="selectNodesByOverviewId" resultType="com.aiforest.tmiot.common.manager.entity.model.NavNodesDO">
+        SELECT
+            id,
+            overview_id,
+            node_order,
+            grid_x,
+            grid_y,
+            deleted
+        FROM
+            tm_nav_nodes
+        WHERE
+            overview_id = #{overviewId}
+          AND deleted = 0
+        ORDER BY
+            node_order ASC
+    </select>
+
+<!--    &lt;!&ndash; 根据节点ID查询坐标绑定 &ndash;&gt;-->
+<!--    <select id="selectBindsByNodeId" resultType="com.aiforest.tmiot.common.manager.entity.model.DeviceCoordinateBindDO">-->
+<!--        SELECT-->
+<!--            id,-->
+<!--            nav_node_id,-->
+<!--            device_coordinate_attribute_id,-->
+<!--            device_id,-->
+<!--            coordinate_value,-->
+<!--            enable_flag,-->
+<!--            tenant_id,-->
+<!--            creator_id,-->
+<!--            creator_name,-->
+<!--            create_time,-->
+<!--            operator_id,-->
+<!--            operator_name,-->
+<!--            operate_time,-->
+<!--            deleted-->
+<!--        FROM-->
+<!--            tm_device_coordinate_bind-->
+<!--        WHERE-->
+<!--            nav_node_id = #{nodeId}-->
+<!--          AND deleted = 0-->
+<!--          AND enable_flag = 0-->
+<!--    </select>-->
+    <!-- 根据节点ID查询坐标绑定（一对一关系，最多返回一条） -->
+    <select id="selectBindsByNodeId" resultType="com.aiforest.tmiot.common.manager.entity.model.DeviceCoordinateBindDO">
+        SELECT
+            id,
+            nav_node_id,
+            device_coordinate_attribute_id,
+            device_id,
+            coordinate_value,
+            enable_flag,
+            tenant_id,
+            creator_id,
+            creator_name,
+            create_time,
+            operator_id,
+            operator_name,
+            operate_time,
+            deleted
+        FROM
+            tm_device_coordinate_bind
+        WHERE
+            nav_node_id = #{nodeId}
+          AND deleted = 0
+          AND enable_flag = 0
+            LIMIT 1  -- 限制只返回一条，确保一对一关系
+    </select>
+
+    <!-- 根据属性ID查询坐标属性 -->
+    <select id="selectAttributeById" resultType="com.aiforest.tmiot.common.manager.entity.model.DeviceCoordinateAttributeDO">
+        SELECT
+            id,
+            attribute_name,
+            attribute_code,
+            device_id,
+            enable_flag,
+            tenant_id,
+            creator_id,
+            creator_name,
+            create_time,
+            operator_id,
+            operator_name,
+            operate_time,
+            deleted
+        FROM
+            tm_device_coordinate_attribute
+        WHERE
+            id = #{attributeId}
+          AND deleted = 0
+          AND enable_flag = 0
+    </select>
+</mapper>

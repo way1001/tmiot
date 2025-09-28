@@ -1,0 +1,109 @@
+/*
+ * Copyright 2016-present the TM IoT original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+syntax = "proto3";
+
+package api.common.manager;
+
+import "api/common/page.proto";
+import "api/common/r.proto";
+
+// 选项配置（与DeviceProto保持一致）
+option java_package = "com.aiforest.tmiot.api.center.manager";
+option java_outer_classname = "NavOverviewProto";
+option objc_class_prefix = "Manager";
+option java_multiple_files = true;
+
+// ------------------------------ 数据结构定义 ------------------------------
+// 1. 设备坐标属性DTO（对应DeviceCoordinateAttributeDO）
+message GrpcDeviceCoordinateAttributeDTO {
+  int64 id = 1;                  // 主键ID
+  string attribute_name = 2;     // 坐标属性名称
+  string attribute_code = 3;     // 坐标属性编码
+  int64 device_id = 4;           // 设备ID
+}
+
+// 2. 设备坐标绑定DTO（关联坐标属性）
+message GrpcDeviceCoordinateBindDTO {
+  int64 id = 1;                          // 主键ID
+  int64 nav_node_id = 2;                 // 导航节点ID
+  int64 device_coordinate_attribute_id = 3; // 坐标属性ID
+  string coordinate_value = 4;           // 坐标值
+  GrpcDeviceCoordinateAttributeDTO attribute = 5; // 关联的坐标属性（1对1）
+}
+
+// 3. 导航节点DTO（关联坐标绑定列表）
+message GrpcNavNodesDTO {
+  int64 id = 1;                          // 节点ID
+  int64 overview_id = 2;                 // 关联自定导航ID
+  int32 node_order = 3;                  // 节点序号
+  int32 grid_x = 4;                      // 网格坐标gx
+  int32 grid_y = 5;                      // 网格坐标gy
+  GrpcDeviceCoordinateBindDTO coordinate_bind = 6; // 关联的坐标绑定列表
+}
+
+message GrpcCusNavOverviewDTO {
+  int64 id = 1;                          // 总览ID
+  string nav_name = 2;                   // 自定导航名称
+  int32 width_px = 3;                    // 画布宽度
+  int32 height_px = 4;                   // 画布高度
+  int32 origin_x_px = 5;                 // 原点left
+  int32 origin_y_px = 6;                 // 原点top
+  int32 enable_flag = 7;                 // 使能标识
+  repeated GrpcNavNodesDTO nav_nodes = 8; // 关联的导航节点列表
+}
+
+// ------------------------------ 请求/响应定义 ------------------------------
+// 1. 单个总览查询请求（按ID）
+message GrpcCusNavOverviewQuery {
+  int64 overview_id = 1;         // 自定导航总览ID（必传）
+  int64 tenant_id = 2;           // 租户ID（权限过滤，必传）
+}
+
+// 2. 总览分页查询请求
+message GrpcPageCusNavOverviewQuery {
+  GrpcPage page = 1;             // 分页参数（页码、页大小）
+  int64 tenant_id = 2;           // 租户ID（必传）
+  string nav_name = 3;           // 导航名称（模糊查询，可选）
+  int32 enable_flag = 4;         // 使能标识（可选，-1表示全部）
+}
+
+// 3. 单个总览响应
+message GrpcRCusNavOverviewDTO {
+  GrpcR result = 1;                      // 通用响应头（成功/失败标识）
+  GrpcCusNavOverviewDTO data = 2;        // 总览数据（含完整关联链）
+}
+
+// 4. 总览分页响应
+message GrpcRPageCusNavOverviewDTO {
+  GrpcR result = 1;                      // 通用响应头
+  GrpcPageCusNavOverviewDTO data = 2;    // 分页数据
+}
+
+// 5. 分页数据结构（封装分页信息+总览列表）
+message GrpcPageCusNavOverviewDTO {
+  GrpcPage page = 1;                     // 分页元数据（总条数、总页数等）
+  repeated GrpcCusNavOverviewDTO data = 2; // 总览列表（每条含完整关联链）
+}
+
+// ------------------------------ GRPC服务接口 ------------------------------
+service NavOverviewApi {
+  // 1. 按ID查询单个自定导航（含节点+坐标绑定+属性）
+  rpc SelectByOverviewId (GrpcCusNavOverviewQuery) returns (GrpcRCusNavOverviewDTO);
+
+  // 2. 分页查询自定导航列表（每条含完整关联链）
+  rpc SelectByPage (GrpcPageCusNavOverviewQuery) returns (GrpcRPageCusNavOverviewDTO);
+}

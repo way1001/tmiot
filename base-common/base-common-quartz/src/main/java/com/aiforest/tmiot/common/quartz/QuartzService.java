@@ -55,6 +55,44 @@ public class QuartzService {
         scheduler.scheduleJob(jobDetail, trigger);
     }
 
+    // ---------------- 新增方法：创建触发器后立即暂停（专门给 NavigationJob 用） ----------------
+    public void createJobWithIntervalAndPause(String group, String name, int interval, DateBuilder.IntervalUnit unit, Class<? extends Job> jobClass, JobDataMap jobDataMap) throws SchedulerException {
+        JobKey jobKey = JobKey.jobKey(name, group);
+        if (scheduler.checkExists(jobKey)) {
+            return;
+        }
+        //核心修复：按 IntervalUnit 动态构建 SimpleSchedule（仅调用一个间隔方法）
+        SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule();
+        // 根据单位选择对应的间隔方法
+        if (unit == DateBuilder.IntervalUnit.SECOND) {
+            scheduleBuilder.withIntervalInSeconds(interval); // 仅秒单位生效
+        } else if (unit == DateBuilder.IntervalUnit.MINUTE) {
+            scheduleBuilder.withIntervalInMinutes(interval); // 仅分单位生效
+        } else if (unit == DateBuilder.IntervalUnit.HOUR) {
+            scheduleBuilder.withIntervalInHours(interval);   // 仅时单位生效
+        } else {
+            // 如需支持天/周等其他单位，可继续扩展，避免未处理的单位
+            throw new UnsupportedOperationException("暂不支持的时间单位：" + unit.name());
+        }
+        // 配置“无限重复”（根据业务需求，也可改为 withRepeatCount(int) 限制次数）
+        scheduleBuilder.repeatForever();
+
+        // 3. 构建触发器（无需 startNow()，创建后默认暂停，后续强制暂停双重保险）
+        TriggerKey triggerKey = TriggerKey.triggerKey(name + "-trigger", group);
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(triggerKey)
+                .forJob(jobKey) // 绑定到目标任务
+                .withSchedule(scheduleBuilder) // 注入正确的调度规则
+                .build();
+        // 2. 创建任务并绑定触发器
+        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobKey).setJobData(jobDataMap).storeDurably().build();
+        scheduler.scheduleJob(jobDetail, trigger);
+
+        // 3. 额外保险：强制暂停触发器（避免个别 Quartz 版本默认状态不一致）
+        scheduler.pauseTrigger(triggerKey);
+        log.info("任务[{}]的触发器已创建并暂停", name);
+    }
+
     /**
      * 创建调度任务
      *
@@ -96,6 +134,65 @@ public class QuartzService {
         if (!scheduler.isShutdown()) {
             scheduler.shutdown();
         }
+    }
+
+    /**
+     * 更新任务的JobDataMap（用于传递场景ID）
+     */
+    public void updateJobData(JobKey jobKey, JobDataMap newJobDataMap) throws SchedulerException {
+        // 1. 获取现有任务
+        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+        if (jobDetail == null) {
+            throw new SchedulerException("任务不存在：" + jobKey);
+        }
+
+        // 2. 更新JobDataMap
+        JobDataMap oldDataMap = jobDetail.getJobDataMap();
+        oldDataMap.putAll(newJobDataMap); // 覆盖或新增数据
+
+        // 3. 重新注册任务（更新数据）
+        scheduler.addJob(jobDetail, true);
+    }
+
+
+    // ---------------- 新增：任务状态管理方法 ----------------
+    /**
+     * 检查任务是否存在
+     */
+    public boolean checkJobExists(JobKey jobKey) throws SchedulerException {
+        return scheduler.checkExists(jobKey);
+    }
+
+    /**
+     * 暂停任务（停止执行，保留任务定义）
+     */
+    public void pauseJob(JobKey jobKey) throws SchedulerException {
+        scheduler.pauseJob(jobKey);
+    }
+
+    /**
+     * 恢复任务（继续执行）
+     */
+    public void resumeJob(JobKey jobKey) throws SchedulerException {
+        scheduler.resumeJob(jobKey);
+    }
+
+    // Getter（供外部访问调度器，可选）
+    public Scheduler getScheduler() {
+        return scheduler;
+    }
+
+    // 检查调度器是否已启动
+    public boolean isSchedulerStarted() throws SchedulerException {
+        return scheduler.isStarted();
+    }
+    // 恢复触发器
+    public void resumeTrigger(TriggerKey triggerKey) throws SchedulerException {
+        scheduler.resumeTrigger(triggerKey);
+    }
+    // 获取触发器实际状态
+    public Trigger.TriggerState getTriggerState(TriggerKey triggerKey) throws SchedulerException {
+        return scheduler.getTriggerState(triggerKey);
     }
 
 }

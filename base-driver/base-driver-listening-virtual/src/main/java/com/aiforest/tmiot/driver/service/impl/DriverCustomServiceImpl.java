@@ -161,7 +161,7 @@ public class DriverCustomServiceImpl implements DriverCustomService {
         Channel channel = NettyTcpServer.deviceChannelMap.get(deviceId);
         if (Objects.nonNull(channel)) {
 
-            String command = wValue.getPointCode() + "|" + wValue.getValue(); // 例如 "speed|100"
+            String command = "|" + wValue.getPointCode() + "|" + wValue.getValue() + "|"; // 例如 "speed|100"
 
             // 2. 转换为字节数组
             byte[] byteData = command.getBytes(StandardCharsets.UTF_8);
