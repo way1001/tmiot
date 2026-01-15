@@ -15,17 +15,17 @@
 #
 
 # runtime
-FROM way/dc3-jre:2025.2 AS runtime
-LABEL dc3.author=way
-LABEL dc3.author.email=ways.icloud.com
+FROM way/tmiot-jre:2025.2 AS runtime
+LABEL tmiot.author=way
+LABEL tmiot.author.email=ways.icloud.com
 
 # default env
 ENV PARAMS=''
 ENV NODE_ENV=test
-ENV SERVER_NAME=dc3-driver-listening-virtual
+ENV SERVER_NAME=tmiot-driver-listening-virtual
 ENV SERVER_PACKAGES=com.aiforest.tmiot
 ENV APM_AGENT_ENABLE=false
-ENV APM_SERVICE=http://dc3-apm:9300
+ENV APM_SERVICE=http://tmiot-apm:9300
 ENV TCP_PORT 6270
 ENV UDP_PORT 6271
 
@@ -35,21 +35,21 @@ ENV JAVA_OPS="-server \
               -Xmx512m \
               -XX:+UseG1GC \
               -Djava.security.egd=file:/dev/./urandom"
-ENV GC_LOG="-Xlog:gc*:file=dc3/logs/driver/listening-virtual/gc/gc.log:time,uptime,level,tags:filecount=20,filesize=10M"
+ENV GC_LOG="-Xlog:gc*:file=tmiot/logs/driver/listening-virtual/gc/gc.log:time,uptime,level,tags:filecount=20,filesize=10M"
 
-WORKDIR /dc3-driver/dc3-driver-listening-virtual
+WORKDIR /tmiot-driver/tmiot-driver-listening-virtual
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && mkdir -p /dc3-driver/dc3-driver-listening-virtual/dc3/logs/driver/listening-virtual/gc
+    && mkdir -p /tmiot-driver/tmiot-driver-listening-virtual/tmiot/logs/driver/listening-virtual/gc
 
-COPY target/dc3-driver-listening-virtual.jar ./
+COPY target/tmiot-driver-listening-virtual.jar ./
 
-RUN cp /usr/share/dc3/entrypoint.sh ./entrypoint.sh
+RUN cp /usr/share/tmiot/entrypoint.sh ./entrypoint.sh
 
 EXPOSE ${TCP_PORT}
 EXPOSE ${UDP_PORT}
-VOLUME /dc3-driver/dc3-driver-listening-virtual/dc3/logs
+VOLUME /tmiot-driver/tmiot-driver-listening-virtual/tmiot/logs
 
 ENTRYPOINT ["./entrypoint.sh"]
 
-CMD ["dc3-driver-listening-virtual.jar"]
+CMD ["tmiot-driver-listening-virtual.jar"]

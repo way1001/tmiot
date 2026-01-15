@@ -20,7 +20,7 @@ spring:
     dynamic:
       datasource:
         master:
-          url: jdbc:postgresql://${POSTGRES_HOST:base-postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB:dc3}?currentSchema=${POSTGRES_SCHEMA:tm_manager}&applicationName=tmiot&ssl=false&stringtype=unspecified&clientEncoding=UTF8&serverTimezone=Asia/Shanghai
+          url: jdbc:postgresql://${POSTGRES_HOST:base-postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB:tmiot}?currentSchema=${POSTGRES_SCHEMA:tm_manager}&applicationName=tmiot&ssl=false&stringtype=unspecified&clientEncoding=UTF8&serverTimezone=Asia/Shanghai
           username: ${POSTGRES_USERNAME:tm}
           password: ${POSTGRES_PASSWORD:tm123}
   rabbitmq:
@@ -40,8 +40,8 @@ spring:
   cloud:
     nacos:
       server-addr: ${NACOS_HOST:base-register}:${NACOS_PORT:8848}
-      username: dc3
-      password: dc3
+      username: tmiot
+      password: tmiot
       discovery:
         namespace: ${NODE_ENV:pre}
 

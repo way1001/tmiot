@@ -8,8 +8,12 @@ public class TMDeviceSnapshotBO {
     private String deviceCode;
     private String deviceName;
     private String status;
-    private PointNodeBO full ;
-    private PointNodeBO lifting ;
-    private PointNodeBO cleaning;
-    private PointNodeBO retainer;
+    private PointNodeBO lwpfull;
+    private PointNodeBO rwpfull ;
+    private PointNodeBO llifting ;
+    private PointNodeBO rlifting ;
+    private PointNodeBO lcleaning;
+    private PointNodeBO rcleaning;
+    private PointNodeBO lstart ;
+    private PointNodeBO rstart ;
 }

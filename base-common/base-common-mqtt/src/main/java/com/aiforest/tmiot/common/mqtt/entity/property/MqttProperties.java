@@ -57,7 +57,7 @@ public class MqttProperties {
     private String topicPrefix;
 
     @NotNull(message = "Default topic can't be empty")
-    private Topic defaultSendTopic = new Topic("dc3/d/v/base-driver-mqtt_default", 2);
+    private Topic defaultSendTopic = new Topic("tmiot/d/v/base-driver-mqtt_default", 2);
 
     @Size(min = 1, message = "Receive topic at least one topic")
     private List<Topic> receiveTopics;

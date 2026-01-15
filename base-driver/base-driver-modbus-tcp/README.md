@@ -1,4 +1,4 @@
-## DC3 Modbus Tcp Driver 说明
+## tmiot Modbus Tcp Driver 说明
 
 ## 功能列表
 
@@ -45,5 +45,5 @@ schedule:
 
 ## 接口测试
 
-> dc3/api/base-driver-modbus-tcp.http
+> tmiot/api/base-driver-modbus-tcp.http
 

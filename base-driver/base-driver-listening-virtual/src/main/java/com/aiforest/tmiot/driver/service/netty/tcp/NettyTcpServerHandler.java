@@ -16,17 +16,24 @@
 
 package com.aiforest.tmiot.driver.service.netty.tcp;
 
+import com.aiforest.tmiot.common.driver.service.DriverSenderService;
+import com.aiforest.tmiot.common.enums.DeviceStatusEnum;
 import com.aiforest.tmiot.driver.service.netty.NettyServerHandler;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Map;
 
 /**
  * 报文处理, 需要视具体情况开发
@@ -51,26 +58,101 @@ import javax.annotation.PostConstruct;
 @Component
 @ChannelHandler.Sharable
 public class NettyTcpServerHandler extends ChannelInboundHandlerAdapter {
-    private static NettyTcpServerHandler nettyTcpServerHandler;
-    @Resource
-    private NettyServerHandler nettyServerHandler;
+//    private static NettyTcpServerHandler nettyTcpServerHandler;
+//    @Resource
+//    private NettyServerHandler nettyServerHandler;
+//    // 注入DriverSenderService，用于发送离线状态（原有驱动已注入，直接复用）
+//    @Resource
+//    private DriverSenderService driverSenderService;
 
-    @PostConstruct
-    public void init() {
-        nettyTcpServerHandler = this;
+    // 2. 声明成员变量，使用final修饰（构造方法注入后不可修改，保证线程安全）
+    private final NettyServerHandler nettyServerHandler;
+    private final DriverSenderService driverSenderService;
+    // 3. 构造方法注入依赖（@Resource 注解标注构造方法，Spring自动装配，确保依赖非null）
+    @Autowired
+    public NettyTcpServerHandler(NettyServerHandler nettyServerHandler, DriverSenderService driverSenderService) {
+        this.nettyServerHandler = nettyServerHandler;
+        this.driverSenderService = driverSenderService;
     }
+//    @PostConstruct
+//    public void init() {
+//        nettyTcpServerHandler = this;
+//    }
 
     @Override
     @SneakyThrows
     public void channelRead(ChannelHandlerContext context, Object msg) {
-        nettyTcpServerHandler.nettyServerHandler.read(context, (ByteBuf) msg);
+//        nettyTcpServerHandler.nettyServerHandler.read(context, (ByteBuf) msg);
+        // 直接使用成员变量nettyServerHandler，无需静态引用
+        this.nettyServerHandler.read(context, (ByteBuf) msg);
+    }
+
+    // 新增：处理空闲事件（核心方法）
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        // 判断是否为IdleStateEvent（空闲事件）
+        if (evt instanceof IdleStateEvent idleStateEvent) {
+            // 只处理读空闲事件（长时间未收到数据）
+            if (idleStateEvent.state() == IdleState.READER_IDLE) {
+                log.warn("通道读空闲超时，设备即将标记为离线：{}", ctx.channel().remoteAddress());
+                // 1. 根据通道查找关联的设备ID
+                Long deviceId = getDeviceIdByChannel(ctx.channel());
+                if (deviceId != null) {
+                    // 2. 移除设备与通道的映射关系
+                    NettyTcpServer.deviceChannelMap.remove(deviceId);
+                    // 3. 发送设备离线状态给SDK
+                    driverSenderService.deviceStatusSender(deviceId, DeviceStatusEnum.OFFLINE);
+                    log.info("设备{}已标记为离线（读空闲超时）", deviceId);
+                }
+                // 4. 关闭通道（可选，根据业务需求决定是否关闭）
+                ctx.close();
+            }
+        } else {
+            // 非空闲事件，执行父类逻辑
+            super.userEventTriggered(ctx, evt);
+        }
     }
 
     @Override
     @SneakyThrows
     public void exceptionCaught(ChannelHandlerContext context, Throwable throwable) {
-        log.debug(throwable.getMessage());
-        context.disconnect();
+//        log.debug(throwable.getMessage());
+//        context.disconnect();
+        log.error("通道异常：{}", throwable.getMessage(), throwable);
+        // 异常时：清理设备-通道映射，标记设备离线
+        Long deviceId = getDeviceIdByChannel(context.channel());
+        if (deviceId != null) {
+            NettyTcpServer.deviceChannelMap.remove(deviceId);
+            driverSenderService.deviceStatusSender(deviceId, DeviceStatusEnum.OFFLINE);
+            log.info("设备{}已标记为离线（通道异常）", deviceId);
+        }
+        context.close();
     }
+
+    // 新增：根据通道反向查找设备ID（关键辅助方法）
+    private Long getDeviceIdByChannel(Channel channel) {
+        // 遍历deviceChannelMap，根据通道查找对应的设备ID
+        for (Map.Entry<Long, Channel> entry : NettyTcpServer.deviceChannelMap.entrySet()) {
+            if (entry.getValue().equals(channel)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    // 新增：通道断开时的处理（可选，增强健壮性）
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        log.info("通道断开：{}", ctx.channel().remoteAddress());
+        // 通道断开时：清理映射，标记设备离线
+        Long deviceId = getDeviceIdByChannel(ctx.channel());
+        if (deviceId != null) {
+            NettyTcpServer.deviceChannelMap.remove(deviceId);
+            driverSenderService.deviceStatusSender(deviceId, DeviceStatusEnum.OFFLINE);
+            log.info("设备{}已标记为离线（通道断开）", deviceId);
+        }
+        super.channelInactive(ctx);
+    }
+
 
 }

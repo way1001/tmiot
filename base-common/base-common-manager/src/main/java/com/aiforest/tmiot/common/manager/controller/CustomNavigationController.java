@@ -361,7 +361,7 @@ public Mono<R<List<NavPathPoint>>> planPath(@PathVariable Long id,
 //    List<NavPathPoint> path = bfsWithFences(start, end, allowed, fences);
 //    return Mono.just(R.ok(path));
     return Mono.fromCallable(() ->
-                    navigationPathService.planPath(id, from, to))
+                    navigationPathService.planPath(id, from, to, Collections.emptySet()))
             .map(R::ok);
 }
 

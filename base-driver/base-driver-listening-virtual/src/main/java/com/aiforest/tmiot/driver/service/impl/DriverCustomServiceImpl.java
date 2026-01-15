@@ -110,7 +110,20 @@ public class DriverCustomServiceImpl implements DriverCustomService {
          *
          * 在以下示例中, 所有设备的状态被设置为 {@link DeviceStatusEnum#ONLINE}, 并设置状态的有效期为 25 {@link TimeUnit#SECONDS}。
          */
-        driverMetadata.getDeviceIds().forEach(id -> driverSenderService.deviceStatusSender(id, DeviceStatusEnum.ONLINE, 25, TimeUnit.SECONDS));
+//        driverMetadata.getDeviceIds().forEach(id -> driverSenderService.deviceStatusSender(id, DeviceStatusEnum.ONLINE, 25, TimeUnit.SECONDS));
+        // 优化后：仅当设备存在有效通道（已建立连接且未空闲超时）时，才上报在线状态
+        driverMetadata.getDeviceIds().forEach(id -> {
+            // 判断设备是否存在有效通道
+            Channel channel = NettyTcpServer.deviceChannelMap.get(id);
+            if (channel != null && channel.isActive() && channel.isOpen()) {
+                // 仅有效通道的设备，上报在线状态
+                driverSenderService.deviceStatusSender(id, DeviceStatusEnum.ONLINE, 25, TimeUnit.SECONDS);
+            } else {
+                // 无有效通道的设备，不覆盖离线状态（或主动上报离线，根据业务选择）
+                // 可选：driverSenderService.deviceStatusSender(id, DeviceStatusEnum.OFFLINE);
+                log.debug("设备{}无有效通道，不更新在线状态", id);
+            }
+        });
     }
 
     @Override

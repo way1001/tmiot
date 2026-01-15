@@ -75,7 +75,7 @@ public class ScheduleForDataServiceImpl implements ScheduleForDataService {
                 quartzService.createJobWithIntervalAndPause(
                         ScheduleConstant.DATA_SCHEDULE_GROUP,
                         "navigation-strategy-schedule-job",
-                        1,
+                        3,
                         DateBuilder.IntervalUnit.SECOND,
                         NavigationJobForData.class,
                         initDataMap // 传入初始化数据（空）

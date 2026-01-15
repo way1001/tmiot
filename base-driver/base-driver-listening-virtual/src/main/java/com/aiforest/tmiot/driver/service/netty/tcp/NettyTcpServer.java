@@ -26,13 +26,16 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.bytes.ByteArrayEncoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
+import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author way
@@ -48,6 +51,10 @@ public class NettyTcpServer {
      */
     public static final Map<Long, Channel> deviceChannelMap = new ConcurrentHashMap<>(16);
 
+    // 注入Spring托管的NettyTcpServerHandler Bean
+    @Resource
+    private NettyTcpServerHandler nettyTcpServerHandler;
+
     @SneakyThrows
     public void start(int port) {
         EventLoopGroup group = new NioEventLoopGroup();
@@ -62,7 +69,11 @@ public class NettyTcpServer {
                             socketChannel.pipeline()
                                     .addLast(new StringEncoder())
                                     .addLast(new ByteArrayEncoder())
-                                    .addLast(new WriteTimeoutHandler(30), new NettyTcpServerHandler());
+                                    // 新增：添加空闲检测处理器
+                                    // 参数说明：readerIdleTime(读空闲时间), writerIdleTime(写空闲时间), allIdleTime(读写空闲时间), 时间单位
+                                    // 示例：30秒未收到数据则触发读空闲事件（可根据业务调整时间）
+                                    .addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS))
+                                    .addLast(new WriteTimeoutHandler(30), nettyTcpServerHandler);
                         }
                     });
             ChannelFuture future = bootstrap.bind().sync();

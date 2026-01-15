@@ -19,8 +19,17 @@ public class NavigationPathServiceImpl implements NavigationPathService {
     private final NavNodesManager navNodesService;
     private final NavFencesManager navFencesService;
 
-    public List<NavPathPoint> planPath(Long overviewId, Long from, Long to) {
-        /* 与原来 Controller 中的 planPath 逻辑完全一致，这里仅把最外层提取出来 */
+    /**
+     * 路径规划方法（新增禁行节点参数）
+     * @param overviewId 场景ID
+     * @param from 起点节点ID
+     * @param to 终点节点ID
+     * @param forbiddenNodeIds 禁行节点ID集合（新增参数）
+     * @return 规划后的路径点列表
+     */
+    public List<NavPathPoint> planPath(Long overviewId, Long from, Long to, Set<Long> forbiddenNodeIds) {
+    /* 与原来 Controller 中的 planPath 逻辑完全一致，这里仅把最外层提取出来 */
+        /* 1. 查询基础可通行节点 */
         Set<String> allowed = navNodesService.lambdaQuery()
                 .eq(NavNodesDO::getOverviewId, overviewId)
                 .eq(NavNodesDO::getDeleted, 0)
@@ -28,6 +37,22 @@ public class NavigationPathServiceImpl implements NavigationPathService {
                 .stream()
                 .map(n -> n.getGridX() + "," + n.getGridY())
                 .collect(Collectors.toSet());
+
+        /* 2. 处理禁行节点 - 从可通行集合中移除 */
+        if (forbiddenNodeIds != null && !forbiddenNodeIds.isEmpty()) {
+            // 查询禁行节点对应的格点
+            List<NavNodesDO> forbiddenNodes = navNodesService.lambdaQuery()
+                    .in(NavNodesDO::getId, forbiddenNodeIds)
+                    .eq(NavNodesDO::getOverviewId, overviewId)
+                    .eq(NavNodesDO::getDeleted, 0)
+                    .list();
+
+            // 提取禁行格点的key并从allowed中移除
+            Set<String> forbiddenKeys = forbiddenNodes.stream()
+                    .map(n -> n.getGridX() + "," + n.getGridY())
+                    .collect(Collectors.toSet());
+            allowed.removeAll(forbiddenKeys);
+        }
 
         List<NavFencesDO> fences = navFencesService.lambdaQuery()
                 .eq(NavFencesDO::getOverviewId, overviewId)
@@ -47,6 +72,11 @@ public class NavigationPathServiceImpl implements NavigationPathService {
 
         return bfsWithFences(start, end, allowed, fences);
     }
+
+//    // 兼容原有调用，默认不传禁行节点
+//    public List<NavPathPoint> planPath(Long overviewId, Long from, Long to) {
+//        return planPath(overviewId, from, to, Collections.emptySet());
+//    }
 
 
     /* ================= 考虑围栏的BFS算法 ================= */

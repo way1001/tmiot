@@ -16,8 +16,8 @@
 
 # runtime
 FROM way/base-jre:2025.2 AS runtime
-LABEL dc3.author=way
-LABEL dc3.author.email=ways.icloud.com
+LABEL tmiot.author=way
+LABEL tmiot.author.email=ways.icloud.com
 
 # default env
 ENV PARAMS=''
@@ -34,19 +34,19 @@ ENV JAVA_OPS="-server \
               -Xmx512m \
               -XX:+UseG1GC \
               -Djava.security.egd=file:/dev/./urandom"
-ENV GC_LOG="-Xlog:gc*:file=dc3/logs/gateway/gc/gc.log:time,uptime,level,tags:filecount=20,filesize=10M"
+ENV GC_LOG="-Xlog:gc*:file=tmiot/logs/gateway/gc/gc.log:time,uptime,level,tags:filecount=20,filesize=10M"
 
 WORKDIR /base-gateway
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && mkdir -p /base-gateway/dc3/logs/gateway/gc
+    && mkdir -p /base-gateway/tmiot/logs/gateway/gc
 
 COPY target/base-gateway.jar ./
 
-RUN cp /usr/share/dc3/entrypoint.sh ./entrypoint.sh
+RUN cp /usr/share/tmiot/entrypoint.sh ./entrypoint.sh
 
 EXPOSE ${SERVER_PORT}
-VOLUME /base-gateway/dc3/logs
+VOLUME /base-gateway/tmiot/logs
 
 ENTRYPOINT ["./entrypoint.sh"]
 

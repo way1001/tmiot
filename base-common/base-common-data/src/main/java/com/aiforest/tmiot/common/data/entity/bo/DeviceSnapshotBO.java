@@ -15,6 +15,7 @@ public class DeviceSnapshotBO {
     private PointNodeBO blind_dist;
     private PointNodeBO current_tag;
     private PointNodeBO nav_route;
+    private PointNodeBO ef_status;
 //    private PointNodeBO lspeed;
 //    private PointNodeBO rspeed;
 //    private PointNodeBO work_status;
@@ -22,7 +23,7 @@ public class DeviceSnapshotBO {
 //    private PointNodeBO cleaning;
 //    private PointNodeBO full;
 //    private PointNodeBO ejection;
-//    private PointNodeBO charging;
+    private PointNodeBO charging;
 //    private PointNodeBO exit_direction;
 //    private PointNodeBO EWP;
 //    private PointNodeBO trun_count;

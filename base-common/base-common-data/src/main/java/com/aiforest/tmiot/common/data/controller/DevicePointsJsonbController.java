@@ -26,29 +26,29 @@ public class DevicePointsJsonbController {
         return Mono.just(R.ok());
     }
 
-    @GetMapping("/{deviceId}")
-    public Mono<R<IPage<DeviceSnapshotVO>>> page(
-            @PathVariable String deviceId,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
-            @RequestParam(defaultValue = "1") long current,
-            @RequestParam(defaultValue = "10") long size) {
+//    @GetMapping("/{deviceId}")
+//    public Mono<R<IPage<DeviceSnapshotVO>>> page(
+//            @PathVariable String deviceId,
+//            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
+//            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
+//            @RequestParam(defaultValue = "1") long current,
+//            @RequestParam(defaultValue = "10") long size) {
+//
+//        HistoryPageDTO dto = new HistoryPageDTO();
+//        dto.setDeviceId(deviceId);
+//        dto.setStart(start);
+//        dto.setEnd(end);
+//
+//        return Mono.just(R.ok(service.page(dto, current, size)));
+//    }
 
-        HistoryPageDTO dto = new HistoryPageDTO();
-        dto.setDeviceId(deviceId);
-        dto.setStart(start);
-        dto.setEnd(end);
-
-        return Mono.just(R.ok(service.page(dto, current, size)));
-    }
-
-    @GetMapping("/page")
-    public Mono<R<IPage<DeviceSnapshotVO>>> page(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
-            @RequestParam(defaultValue = "1") long current,
-            @RequestParam(defaultValue = "10") long size) {
-        return Mono.just(R.ok(service.pageByTime(start, end, current, size)));
-    }
+//    @GetMapping("/page")
+//    public Mono<R<IPage<DeviceSnapshotVO>>> page(
+//            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+//            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
+//            @RequestParam(defaultValue = "1") long current,
+//            @RequestParam(defaultValue = "10") long size) {
+//        return Mono.just(R.ok(service.pageByTime(start, end, current, size)));
+//    }
 
 }

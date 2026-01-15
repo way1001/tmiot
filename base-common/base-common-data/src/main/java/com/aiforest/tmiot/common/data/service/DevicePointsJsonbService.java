@@ -14,6 +14,6 @@ import java.time.LocalDateTime;
 public interface DevicePointsJsonbService extends IService<DevicePointsJsonbDO> {
 
     void save(DeviceSnapshotBO bo);
-    IPage<DeviceSnapshotVO> page(HistoryPageDTO dto, long current, long size);
-    IPage<DeviceSnapshotVO> pageByTime(LocalDateTime start, LocalDateTime end, long current, long size);
+//    IPage<DeviceSnapshotVO> page(HistoryPageDTO dto, long current, long size);
+//    IPage<DeviceSnapshotVO> pageByTime(LocalDateTime start, LocalDateTime end, long current, long size);
 }

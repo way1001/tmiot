@@ -38,16 +38,16 @@ public class DevicePointsJsonbServiceImpl
     }
 
     /** 查询：MyBatis-Plus 自动转 VO */
-    @Override
-    public IPage<DeviceSnapshotVO> page(HistoryPageDTO dto, long current, long size) {
-        return mapper.selectVoPage(new Page<>(current, size), dto);
-    }
+//    @Override
+//    public IPage<DeviceSnapshotVO> page(HistoryPageDTO dto, long current, long size) {
+//        return mapper.selectVoPage(new Page<>(current, size), dto);
+//    }
 
-    @Override
-    public IPage<DeviceSnapshotVO> pageByTime(LocalDateTime start, LocalDateTime end,
-                                              long current, long size) {
-        Page<DevicePointsJsonbDO> page = Page.of(current, size);
-        IPage<DevicePointsJsonbDO> doPage = baseMapper.selectByTime(page, start, end);
-        return doPage.convert(DevicePointsJsonbBuilder.INSTANCE::doToVo);
-    }
+//    @Override
+//    public IPage<DeviceSnapshotVO> pageByTime(LocalDateTime start, LocalDateTime end,
+//                                              long current, long size) {
+//        Page<DevicePointsJsonbDO> page = Page.of(current, size);
+//        IPage<DevicePointsJsonbDO> doPage = baseMapper.selectByTime(page, start, end);
+//        return doPage.convert(DevicePointsJsonbBuilder.INSTANCE::doToVo);
+//    }
 }

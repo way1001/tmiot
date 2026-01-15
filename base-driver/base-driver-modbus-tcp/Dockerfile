@@ -16,8 +16,8 @@
 
 # runtime
 FROM way/base-jre:2025.2 AS runtime
-LABEL dc3.author=way
-LABEL dc3.author.email=ways.icloud.com
+LABEL tmiot.author=way
+LABEL tmiot.author.email=ways.icloud.com
 
 # default env
 ENV PARAMS=''
@@ -33,18 +33,18 @@ ENV JAVA_OPS="-server \
               -Xmx512m \
               -XX:+UseG1GC \
               -Djava.security.egd=file:/dev/./urandom"
-ENV GC_LOG="-Xlog:gc*:file=dc3/logs/driver/modbus-tcp/gc/gc.log:time,uptime,level,tags:filecount=20,filesize=10M"
+ENV GC_LOG="-Xlog:gc*:file=tmiot/logs/driver/modbus-tcp/gc/gc.log:time,uptime,level,tags:filecount=20,filesize=10M"
 
 WORKDIR /base-driver/base-driver-modbus-tcp
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && mkdir -p /base-driver/base-driver-modbus-tcp/dc3/logs/driver/modbus-tcp/gc
+    && mkdir -p /base-driver/base-driver-modbus-tcp/tmiot/logs/driver/modbus-tcp/gc
 
 COPY target/base-driver-modbus-tcp.jar ./
 
-RUN cp /usr/share/dc3/entrypoint.sh ./entrypoint.sh
+RUN cp /usr/share/tmiot/entrypoint.sh ./entrypoint.sh
 
-VOLUME /base-driver/base-driver-modbus-tcp/dc3/logs
+VOLUME /base-driver/base-driver-modbus-tcp/tmiot/logs
 
 ENTRYPOINT ["./entrypoint.sh"]
 

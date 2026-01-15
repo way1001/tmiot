@@ -101,7 +101,7 @@
             <artifactId>freemarker</artifactId>
         </dependency>
 
-        <!-- DC3 Common Exception -->
+        <!-- tmiot Common Exception -->
         <dependency>
             <groupId>com.aiforest.tmiot</groupId>
             <artifactId>base-common-constant</artifactId>

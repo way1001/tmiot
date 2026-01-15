@@ -20,7 +20,7 @@ spring:
     dynamic:
       datasource:
         master:
-          url: jdbc:postgresql://${POSTGRES_HOST:base-postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB:dc3}?currentSchema=${POSTGRES_SCHEMA:tm_manager}&applicationName=tmiot&ssl=false&stringtype=unspecified&clientEncoding=UTF8&serverTimezone=Asia/Shanghai
+          url: jdbc:postgresql://${POSTGRES_HOST:base-postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB:tmiot}?currentSchema=${POSTGRES_SCHEMA:tm_manager}&applicationName=tmiot&ssl=false&stringtype=unspecified&clientEncoding=UTF8&serverTimezone=Asia/Shanghai
           username: ${POSTGRES_USERNAME:tm}
           password: ${POSTGRES_PASSWORD:tm123}
   rabbitmq:

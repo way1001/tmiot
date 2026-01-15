@@ -13,6 +13,7 @@ import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -27,11 +28,15 @@ public class NavigationPathServiceImpl implements NavigationPathService {
     @Override
     public List<NavPathPoint> planPath(long overviewId,
                                        long fromNodeId,
-                                       long toNodeId) {
+                                       long toNodeId,
+                                       Set<Long> forbiddenNodeIds) {
+
+
         PlanPathRequest request = PlanPathRequest.newBuilder()
                 .setOverviewId(overviewId)
                 .setFromNodeId(fromNodeId)
                 .setToNodeId(toNodeId)
+                .addAllForbiddenNodeIds(forbiddenNodeIds)
                 .build();
 
         PlanPathReply reply = navOverviewApiBlockingStub.planPath(request);

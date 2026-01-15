@@ -77,7 +77,7 @@ public class NettyServerHandler {
 
             if (infoMap.get("key").getValue().equals(hexKey)) {
                 String value = switch (point.getPointCode()) {
-                    case "ctrl_mode" -> String.valueOf(byteBuf.getByte(start));
+                    case "ctrl_mode", "SWS1", "SRS1", "SRS2", "SWS2", "ef_status", "charging" -> String.valueOf(byteBuf.getByte(start));
                     case "run_state", "nav_mode", "battery_voltage", "blind_dist" -> String.valueOf(byteBuf.getShort(start));
                     case "current_tag" -> String.valueOf(byteBuf.getInt(start));
 //                    case "nav_route" -> String.valueOf(byteBuf.getByte(start));
